@@ -1,0 +1,55 @@
+
+
+<!-- Modal de Crear/Editar -->
+<p-dialog [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }"
+    header="{{ categoriaId != 0 ? 'Editar Categoría' : 'Nueva Categoría' }}" [(visible)]="dialog" [modal]="true"
+    [style]="{ width: '25vw' }"  (onHide)="closeModal()" [draggable]="false" styleClass="p-fluid">
+
+    <form [formGroup]="categoriaForm" (ngSubmit)="saveCategoria()">
+        <div *ngIf="categoriaId ==0">
+            <img class="block m-auto shadow-8 mb-2 p-1 border-round" [src]="photoSelected ||'subir2.png'" width="170px"
+                height="170px" />
+
+            <div class="field">
+                <input type="file" accept=".png, .jpg, .jpeg" #fileInput (change)="onPhotoSelected($event)"
+                    style="display: none;">
+                <div class="flex justify-content-center">
+                    <p-button label="Seleccionar Imagen" [text]="true" severity="info" icon="pi pi-upload"
+                        (click)="fileInput.click()" class="w-6" />
+                </div>
+                <div *ngIf="photoError" class="text-red-500">
+                    <small>El archivo debe ser una imagen válida (PNG, JPG, JPEG).</small>
+                </div>
+            </div>
+        </div>
+
+        <div class="field">
+            <label for="nombre">Nombre</label>
+            <input id="nombre" pInputText type="text" placeholder="Ingrese Nombre" formControlName="nombre"
+                class="mb-1">
+
+            <div *ngIf="categoriaForm.get('nombre')?.invalid && categoriaForm.get('nombre')?.touched"
+                class="text-red-500">
+                <small *ngIf="categoriaForm.get('nombre')?.hasError('required')">El nombre es requerido.</small>
+            </div>
+        </div>
+
+        <div class="field">
+            <label for="lastname1">Descripción</label>
+            <textarea id="descripcion" pInputText placeholder="Ingrese descripcion" formControlName="descripcion"
+                type="text" class="mb-1" rows="3"> </textarea>
+
+            <div *ngIf="categoriaForm.get('descripcion')?.invalid && categoriaForm.get('descripcion')?.touched"
+                class="text-red-500">
+                <small *ngIf="categoriaForm.get('descripcion')?.hasError('required')">La descripcion es
+                    requerido.</small>
+            </div>
+        </div>
+
+        <div class="flex justify-content-end mt-5">
+            <p-button size="small" label="Cancelar" icon="pi pi-times" class="p-button-text mx-2"
+            (click)="closeModal()" />
+            <p-button size="small" label="Guardar" icon="pi pi-check" type="submit" severity="success" />
+        </div>
+    </form>
+</p-dialog>

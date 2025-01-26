@@ -1,1 +1,90 @@
 /* You can add global styles to this file, and also import other style files */
+
+* {
+  font-family: "Roboto", sans-serif;
+}
+
+/* Estilos generales */
+body,
+html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+.container {
+  width: 100%;
+  max-width: 1400px; /* Ancho máximo del contenedor */
+  margin: 0 auto; /* Márgenes automáticos para centrar el contenido */
+  padding: 0 15px; /* Espaciado interno para no tocar los bordes */
+}
+
+/*max-width: 1200px; Ancho máximo del contenedor */
+
+/* Pantallas pequeñas (≥576px) */
+@media (min-width: 576px) {
+  .container {
+    width: 540px; /* Ancho del contenedor en pantallas pequeñas */
+  }
+}
+
+/* Pantallas medianas (≥768px) */
+@media (min-width: 768px) {
+  .container {
+    width: 720px; /* Ancho del contenedor en pantallas medianas */
+  }
+}
+
+/* Pantallas grandes (≥992px) */
+@media (min-width: 992px) {
+  .container {
+    width: 960px; /* Ancho del contenedor en pantallas grandes */
+  }
+}
+
+/* Pantallas extra grandes (≥1200px) */
+@media (min-width: 1200px) {
+  .container {
+    width: 1140px; /* Ancho del contenedor en pantallas extra grandes */
+  }
+}
+
+/* Pantallas muy grandes (≥1400px) */
+@media (min-width: 1400px) {
+  .container {
+    width: 1350px; /* Ancho del contenedor en pantallas muy grandes */
+  }
+}
+
+.p-menubar {
+  padding: 15px;
+  background-image: url("./../public/fondo8.png"); /* Ruta de la imagen */
+  background-size: cover; /* Ajusta el tamaño de la imagen */
+  background-repeat: no-repeat; /* Evita que la imagen se repita */
+}
+.p-sidebar {
+  padding: 15px;
+  background-size: cover; /* Ajusta el tamaño de la imagen */
+  background-repeat: no-repeat; /* Evita que la imagen se repita */
+}
+/* Cambiar el color del texto de los elementos del sidebar */
+.p-sidebar .p-menuitem-link {
+  color: white; /* Cambia este valor al color que prefieras */
+}
+
+/* Cambiar el color del icono */
+.p-sidebar .p-menuitem-link .pi {
+  color: white; /* Cambia este valor al color que prefieras */
+}
+
+@media (min-width: 1400px) {
+  /* Pantallas pequeñas, puedes ajustar el tamaño */
+  .p-menubar {
+    padding-left: 350px; /* Cambia este valor al margen que prefieras */
+    padding-right: 350px; /* Cambia este valor al margen que prefieras */
+  }
+}
+
+/*form .ng-invalid.ng-touched{
+  border: 1px solid rgb(227, 90, 90);
+} */
+
