@@ -46,7 +46,6 @@ export class ModalPhotoProductoComponent implements OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['productoId'] && this.productoId != 0) {
-      console.log('CAMBIO>>>>>>>>>');
       this.assignPhoto();
     }
   }
@@ -66,7 +65,7 @@ export class ModalPhotoProductoComponent implements OnChanges {
   }
 
   onImageError(event: Event) {
-    (event.target as HTMLImageElement).src = 'nada2.png';
+    (event.target as HTMLImageElement).src = 'not-found.png';
   }
 
   async updateImage() {

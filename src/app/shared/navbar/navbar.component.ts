@@ -6,7 +6,6 @@ import { PrimeModule } from '../prime/prime.module';
 import { AuthService } from '@/modules/auth/infraestructure/auth.service';
 import { LoginResponse } from '@/modules/auth/domain/auth.interface';
 
-
 @Component({
   selector: 'app-navbar',
   standalone: true,
@@ -17,8 +16,7 @@ import { LoginResponse } from '@/modules/auth/domain/auth.interface';
 export class NavbarComponent implements OnInit {
   private authService = inject(AuthService);
   private router = inject(Router);
-  auth!: LoginResponse |null
-
+  auth!: LoginResponse | null;
 
   items: MenuItem[] | undefined;
   sidebarVisible: boolean = false;
@@ -28,14 +26,12 @@ export class NavbarComponent implements OnInit {
     this.sidebarRef.close(e);
   }
 
-  logout(){
+  logout() {
     this.router.navigate(['login']);
     this.authService.removeAuthorization();
   }
 
   ngOnInit() {
-    this.auth= this.authService.getAuthorization();
+    this.auth = this.authService.getAuthorization();
   }
-
-
 }

@@ -38,7 +38,7 @@ export class ModalPhotoComponent implements OnChanges {
   private imageUploadService = inject(ImageUploadService);
   private categoriaService = inject(CategoriaService);
 
-  dataCategoria!: CategoriaResponse;
+  dataCategoria!: CategoriaRequest;
   urlCategoria: string = urlcategoria;
   photoError: boolean = false;
   photoSelected!: string | null;
@@ -67,7 +67,7 @@ export class ModalPhotoComponent implements OnChanges {
   }
 
   onImageError(event: Event) {
-    (event.target as HTMLImageElement).src = 'nada2.png';
+    (event.target as HTMLImageElement).src = 'not-found.png';
   }
 
   async updateImage() {

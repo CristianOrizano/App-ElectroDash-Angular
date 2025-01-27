@@ -15,4 +15,11 @@ export interface UsuarioResponse {
 	apellido: string;
 	nimagen: string;
 	username: string;
+	password: string;
+	roles: RoleResponse[];
+}
+
+export interface RoleResponse {
+	id: number;
+	nombre: string;
 }

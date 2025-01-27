@@ -61,7 +61,6 @@ export class ModalSaveComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['productoId'] && this.productoId != 0) {
-      console.log('CAMBIO>>>>>>>>>');
       this.assignForm();
     }
   }
@@ -83,7 +82,6 @@ export class ModalSaveComponent implements OnInit, OnChanges {
   async saveCategoria() {
     if (this.productoForm.valid) {
       const saveProducto: ProductoRequest = this.productoForm.value;
-      console.log('>>>> VALOR ENVIADO', saveProducto);
       if (this.productoId !== 0) {
         // update
         this.updateProducto(this.productoId, saveProducto);
@@ -109,8 +107,8 @@ export class ModalSaveComponent implements OnInit, OnChanges {
   findByIdProducto(id: number) {
     this.productoService.findById(id).subscribe({
       next: (response) => {
-        if(response.nimagen !== null){
-          this.photoSelected = urlproducto + response.nimagen
+        if (response.nimagen !== null) {
+          this.photoSelected = urlproducto + response.nimagen;
         }
         this.productoForm.patchValue(response);
         this.productoForm.get('idCategoria')?.setValue(response.categoria.id);

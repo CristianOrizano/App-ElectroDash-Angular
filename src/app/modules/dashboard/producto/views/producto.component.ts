@@ -93,13 +93,14 @@ export class ProductoComponent {
     this.idProductoModal = producto?.id || 0;
     this.displayDialog = true;
   }
+
   openDialogPhoto(categoria?: ProductoResponse) {
     this.idProductoPhotoModal = categoria?.id || 0;
     this.displayDialogPhoto = true;
   }
 
   onImageError(event: Event) {
-    (event.target as HTMLImageElement).src = 'nada2.png';
+    (event.target as HTMLImageElement).src = 'not-found.png';
   }
 
   onLazyLoad(event: any) {

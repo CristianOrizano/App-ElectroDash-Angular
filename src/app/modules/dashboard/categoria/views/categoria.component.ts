@@ -91,7 +91,7 @@ export class CategoriaComponent {
   }
 
   onImageError(event: Event) {
-    (event.target as HTMLImageElement).src = 'nada2.png';
+    (event.target as HTMLImageElement).src = 'not-found.png';
   }
 
   openDialog(categoria?: CategoriaResponse) {

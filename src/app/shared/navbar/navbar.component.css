@@ -1,0 +1,21 @@
+.fixed-navbar {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1000; /* Asegúrate de que esté por encima de otros elementos */
+}
+
+.container-menu {
+  width: 100%;
+  max-width: 1400px; /* Ancho máximo del contenedor */
+  margin: 0 auto; /* Márgenes automáticos para centrar el contenido */
+  padding: 0 15px; /* Espaciado interno para no tocar los bordes */
+  margin-top: 77px;
+  margin-bottom: 50px;
+  min-height: 100vh; /* Asegura que el contenedor ocupe toda la altura */
+}
+
+.footer {
+  background-image: url('../../../../public/fondos/fondo5.png');
+}
+

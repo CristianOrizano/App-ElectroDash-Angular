@@ -53,6 +53,7 @@ export class ProductoService {
       `${this.baseUrl}/api/producto/${id}`
     );
   }
+
   update(data: ProductoRequest, id: number): Observable<ProductoResponse> {
     return this.http.put<ProductoResponse>(
       `${this.baseUrl}/api/producto/${id}`,

@@ -21,6 +21,10 @@ export const routes: Routes = [
         path: 'producto',
         loadComponent: () => import('./modules/dashboard/producto/views/producto.component').then(m => m.ProductoComponent),
       },
+      {
+        path: 'perfil',
+        loadComponent: () => import('./modules/dashboard/perfil/perfil-usuario.component').then(m => m.PerfilUsuarioComponent),
+      },
       { path: '', redirectTo: 'home', pathMatch: 'full' },
     ]
   },

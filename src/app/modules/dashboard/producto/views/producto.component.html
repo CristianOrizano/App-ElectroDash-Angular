@@ -16,7 +16,7 @@
         <div class="mt-3 lg:mt-0">
             <button pButton pRipple (click)="openDialog()" label="Add" class="p-button-outlined mr-2"
                 icon="pi pi-user-plus"></button>
-            <button pButton pRipple label="Save" icon="pi pi-check"></button>
+            <button pButton pRipple label="Export" icon="pi pi-check"></button>
         </div>
     </div>
 </div>
@@ -29,7 +29,7 @@
         [tableStyle]="{ 'min-width': '50rem' }"
         currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} registros"
         [rowsPerPageOptions]="[10, 25, 50]" [totalRecords]="totalElements" [rowHover]="true"
-        (onLazyLoad)="onLazyLoad($event)">
+        (onLazyLoad)="onLazyLoad($event)" [scrollable]="true" scrollHeight="650px">
 
         <ng-template pTemplate="header">
             <tr>
@@ -61,7 +61,7 @@
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-producto>
-            <tr>
+            <tr [ngClass]="{'low-stock': producto.stock < 10}">
                 <td>{{ producto.id }}</td>
                 <td>{{ producto.descripcion}}</td>
                 <td>{{ producto.marca}}</td>
@@ -69,7 +69,7 @@
                 <td>{{ producto.precio | currency: 'PEN':'symbol':'1.2-2':'es-PE' }}</td>
                 <td>{{ producto.stock}}</td>
                 <td>
-                    <img [src]="producto.nimagen?urlProducto + producto.nimagen : 'nada2.png'" width="50" height="42"
+                    <img [src]="producto.nimagen?urlProducto + producto.nimagen : 'not-found.png'" width="50" height="42"
                         (error)="onImageError($event)" class="shadow-4" />
                 </td>
                 <td>
@@ -79,9 +79,10 @@
                 <td>
                     <p-button icon="pi pi-pencil" (onClick)="openDialog(producto)" [raised]="true" class="mr-2"
                         [rounded]="true" severity="info" />
-                    <p-button icon="pi pi-image" (onClick)="openDialogPhoto(producto)" [raised]="true" severity="help" class="mr-2" [rounded]="true" />
-                    <p-button icon="pi pi-sync" (onClick)="onStateChange(producto.id)" [raised]="true" [raised]="true" severity="danger" class="mr-2"
-                        [rounded]="true" />
+                    <p-button icon="pi pi-image" (onClick)="openDialogPhoto(producto)" [raised]="true" severity="help"
+                        class="mr-2" [rounded]="true" />
+                    <p-button icon="pi pi-sync" (onClick)="onStateChange(producto.id)" [raised]="true" [raised]="true"
+                        severity="danger" class="mr-2" [rounded]="true" />
                 </td>
             </tr>
         </ng-template>

@@ -1,0 +1,4 @@
+.low-stock {
+    background-color: rgb(233, 106, 106) !important;
+    color: white;  /* Cambiar el color del texto a blanco para mayor visibilidad */
+}

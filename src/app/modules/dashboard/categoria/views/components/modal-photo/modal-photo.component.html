@@ -1,7 +1,7 @@
 <p-dialog [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" header="Cambiar Imagen" [(visible)]="dialog"
     [modal]="true" [style]="{ width: '25vw' }" (onHide)="closeModal()" [draggable]="false" styleClass="p-fluid">
 
-    <img class="block m-auto shadow-8 mb-2 border-round" [src]="photoSelected ||'nada2.png'"
+    <img class="block m-auto shadow-8 mb-2 border-round" [src]="photoSelected ||'not-found.png'"
     (error)="onImageError($event)"   
     width="270px"
         height="270px" />

@@ -1,0 +1,32 @@
+<div class="header surface-card shadow-2">
+    <img src="fondos/cover-2.jpg" alt="Cover Image" class="cover-image border-round">
+    <div class="profile-picture">
+        <img src="avatar.png" class="border-400 border-3 border-circle w-10rem h-10rem  bg-primary">
+
+        <p class="font-medium text-2xl">{{auth?.usuario?.nombre}} {{auth?.usuario?.apellido}}
+            <i class="pi pi-check-circle text-green-800 font-bold text-1xl"></i>
+        </p>
+    </div>
+
+</div>
+<div class="">
+
+    <div class="surface-card shadow-2 border-round p-2">
+        <p-table [value]="tableData" [rowHover]="true"
+            styleClass="p-datatable-striped p-datatable-lg p-datatable-gridlines">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th class="text-center" style="min-width:15rem">Campo</th>
+                    <th class="text-center" style="min-width:15rem">Dato</th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-row>
+                <tr>
+                    <td class="text-center">{{row.campo}}</td>
+                    <td class="text-center">{{row.dato}}</td>
+                </tr>
+
+            </ng-template>
+        </p-table>
+    </div>
+</div>

@@ -9,7 +9,6 @@ import { LoginRequest, LoginResponse } from '../domain/auth.interface';
 })
 export class AuthService {
   private baseUrl: string = environment.apiUrl;
-
   private http = inject(HttpClient); // Uso de inject en lugar de constructor
 
   //generamos el token
@@ -29,7 +28,6 @@ export class AuthService {
   // Obtener el token desde el localStorage
   public getAuthorization(): LoginResponse | null {
     const token = localStorage.getItem('STORAGE_OF_AUTHORIZATION');
-
     if (token) {
       return JSON.parse(token); // Parseamos el string a un objeto LoginResponse
     } else {

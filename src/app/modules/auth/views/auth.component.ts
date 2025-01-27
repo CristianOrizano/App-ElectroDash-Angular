@@ -7,7 +7,6 @@ import { AuthService } from '../infraestructure/auth.service';
 import { NotificationService } from '@/core/services/notification-service';
 import { LoginRequest } from '../domain/auth.interface';
 
-
 @Component({
   selector: 'app-auth',
   standalone: true,
@@ -16,16 +15,13 @@ import { LoginRequest } from '../domain/auth.interface';
   styleUrl: './auth.component.css',
 })
 export class AuthComponent implements OnInit {
-
   private authService = inject(AuthService);
   private formBuilder = inject(FormBuilder);
   private notificationService = inject(NotificationService);
   private router = inject(Router);
   loading: boolean = false;
-  
-  ngOnInit(): void {}
 
-  constructor() {}
+  ngOnInit(): void {}
 
   loginForm = this.formBuilder.group({
     username: ['', [Validators.required, Validators.email]],
@@ -52,13 +48,19 @@ export class AuthComponent implements OnInit {
             this.loading = true;
             this.authService.saveAuthorization(response);
             setTimeout(() => {
-             // this.loading = false;
+              // this.loading = false;
               this.router.navigate(['dashboard']);
-              this.notificationService.showSuccess('Exito',"Sesion iniciada con exito");
+              this.notificationService.showSuccess(
+                'Exito',
+                'Sesion iniciada con exito'
+              );
             }, 4000); // 4000 ms = 4 segundos
           },
           error: (err) => {
-            this.notificationService.showError('Error de inicio de sesión',err.error.message);
+            this.notificationService.showError(
+              'Error de inicio de sesión',
+              err.error.message
+            );
           },
         });
     } else {
@@ -66,6 +68,4 @@ export class AuthComponent implements OnInit {
       this.loginForm.markAllAsTouched();
     }
   }
-
-  
 }
