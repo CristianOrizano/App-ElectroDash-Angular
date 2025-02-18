@@ -1,6 +1,6 @@
 <p-dialog [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }"
-    header="{{ productoId != 0 ? 'Editar Producto' : 'Nueva Producto' }}" [(visible)]="dialog" [modal]="true"
-    [style]="{ width: '35vw' }" (onHide)="closeModal()" [draggable]="false" styleClass="p-fluid">
+    header="{{ productoId != 0 ? 'Editar Producto' : 'Nuevo Producto' }}" [(visible)]="dialog" [modal]="true"
+    [style]="{ width: '40vw' }" (onHide)="closeModal()" [draggable]="false" styleClass="p-fluid ">
 
     <form [formGroup]="productoForm" (ngSubmit)="saveCategoria()">
         <div class="formgrid grid">
@@ -22,7 +22,6 @@
                     <div class="col-12 md:col-12 lg:col-12">
                         <div class="field">
                             <label for="nombre">Categoria</label>
-
                             <p-dropdown [options]="listCategoria" optionLabel="nombre" [filter]="true" filterBy="nombre"
                                 [showClear]="true" placeholder="[Seleccione Categoria]" formControlName="idCategoria"
                                 optionValue="id" class="mb-1">
@@ -65,7 +64,7 @@
             <div class="col-12 md:col-6 lg:col-6">
 
                 <img class="block m-auto shadow-8 mb-2 p-1 border-round" [src]="photoSelected ||'subir2.png'"
-                    width="200px" height="200px" />
+                    width="220px" height="220px" />
 
                 <div class="field">
                     <input type="file" accept=".png, .jpg, .jpeg" #fileInput (change)="onPhotoSelected($event)"
@@ -73,7 +72,7 @@
                     <div *ngIf="productoId ==0">
                         <div class="flex justify-content-center">
                             <p-button label="Seleccionar Imagen" [text]="true" severity="info" icon="pi pi-upload"
-                                (click)="fileInput.click()" class="w-6" />
+                                (click)="fileInput.click()" class="w-8" />
                         </div>
                     </div>
                     <div *ngIf="photoError" class="text-red-500">

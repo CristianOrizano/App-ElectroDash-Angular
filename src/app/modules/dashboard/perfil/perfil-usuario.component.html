@@ -1,16 +1,23 @@
-<div class="header surface-card shadow-2">
-    <img src="fondos/cover-2.jpg" alt="Cover Image" class="cover-image border-round">
-    <div class="profile-picture">
-        <img src="avatar.png" class="border-400 border-3 border-circle w-10rem h-10rem  bg-primary">
-
-        <p class="font-medium text-2xl">{{auth?.usuario?.nombre}} {{auth?.usuario?.apellido}}
-            <i class="pi pi-check-circle text-green-800 font-bold text-1xl"></i>
-        </p>
+<div class="profile-container border-round shadow-2 surface-card">
+    <!-- Fondo -->
+    <div class="background-image border-round"></div>
+    <!-- Foto de perfil con icono -->
+    <div class="profile-picture-container">
+        <img src="avatar.png" alt="Profile Picture" class="profile-picture">
+        <!-- Icono para abrir el modal -->
+        <i class="pi pi-pencil profile-icon bg-teal-400 text-white cursor-pointer border-circle"
+            (click)="showDialog()"></i>
     </div>
 
+    <!-- Nombre y nombre de usuario -->
+    <p class="font-medium text-xl mt-7">{{auth?.usuario?.nombre}} {{auth?.usuario?.apellido}}
+        <i class="pi pi-check-circle text-green-800 font-bold text-1xl"></i>
+    </p>
 </div>
-<div class="">
 
+
+
+<div class="">
     <div class="surface-card shadow-2 border-round p-2">
         <p-table [value]="tableData" [rowHover]="true"
             styleClass="p-datatable-striped p-datatable-lg p-datatable-gridlines">
@@ -30,3 +37,26 @@
         </p-table>
     </div>
 </div>
+
+<p-dialog [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" header="Cambiar Imagen" [(visible)]="visible"
+    [modal]="true" [style]="{ width: '25vw' }" [draggable]="false" styleClass="p-fluid">
+
+    <img class="block m-auto shadow-8 mb-2 border-round" [src]="'not-found.png'" (error)="onImageError($event)"
+        width="270px" height="270px" />
+
+    <div class="field">
+        <input type="file" accept=".png, .jpg, .jpeg" #fileInput style="display: none;">
+        <div class="flex justify-content-center">
+            <p-button label="Seleccionar Imagen" [text]="true" severity="info" icon="pi pi-upload"
+                (click)="fileInput.click()" class="w-6" />
+        </div>
+
+    </div>
+
+    <div class="flex justify-content-end mt-8 surface-ground p-2">
+        <p-button size="small" label="Cancelar" icon="pi pi-times" class="p-button-text mx-2"
+            (onClick)="visible = false" />
+        <p-button size="small" label="Guardar" icon="pi pi-check" type="submit" severity="success" />
+    </div>
+
+</p-dialog>

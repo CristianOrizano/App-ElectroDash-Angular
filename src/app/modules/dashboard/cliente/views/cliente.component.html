@@ -1,21 +1,21 @@
 <div class="px-4 py-4 mt-2 mb-2 md:px-6 lg:px-4 surface-card shadow-2 border-round ">
     <ul class="list-none p-0 m-0 flex align-items-center font-medium mb-3">
         <li>
-            <a class="text-500 no-underline line-height-3 cursor-pointer">Inventario</a>
+            <a class="text-500 no-underline line-height-3 cursor-pointer">Cliente</a>
         </li>
         <li class="px-2">
             <i class="pi pi-angle-right text-500 line-height-3"></i>
         </li>
         <li>
-            <span class="text-900 line-height-3">Categoria</span>
+            <span class="text-900 line-height-3">Lista Cliente</span>
         </li>
     </ul>
     <div class="flex align-items-start flex-column lg:justify-content-between lg:flex-row">
-        <div class="font-medium text-3xl text-900">Categorias</div>
+        <div class="font-medium text-3xl text-900">Clientes</div>
 
         <div class="mt-3 lg:mt-0">
             <button pButton pRipple (click)="openDialog()" label="Add" class="p-button-outlined mr-2"
-                icon="pi pi-user-plus"> </button>
+                icon="pi pi-user-plus"></button>
             <button pButton pRipple label="Export" icon="pi pi-check"></button>
         </div>
     </div>
@@ -24,7 +24,7 @@
 <div class="surface-card shadow-2 border-round p-2">
     <app-skeleton *ngIf="isLoading"></app-skeleton>
 
-    <p-table *ngIf="!isLoading" [value]="dataCategoria" [lazy]="true" [paginator]="true" [rows]="categoriaFilter.size"
+    <p-table *ngIf="!isLoading" [value]="dataCliente" [lazy]="true" [paginator]="true" [rows]="clienteFilter.size"
         [showCurrentPageReport]="true" styleClass="p-datatable-striped p-datatable-sm p-datatable-gridlines"
         [tableStyle]="{ 'min-width': '50rem' }"
         currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} registros"
@@ -39,35 +39,38 @@
                 <th pSortableColumn="nombre" style="min-width:10rem">
                     Nombre <p-sortIcon field="nombre" />
                 </th>
-                <th pSortableColumn="descripcion" style="min-width:10rem">
-                    Descripcion <p-sortIcon field="descripcion" />
+                <th pSortableColumn="apellido" style="min-width:10rem">
+                    Apellido <p-sortIcon field="apellido" />
                 </th>
-                <th style="min-width:6rem">
-                    Imagen
+                <th pSortableColumn="direccion" style="min-width:10rem">
+                    Direccion <p-sortIcon field="direccion" />
+                </th>
+                <th pSortableColumn="ndocumento" style="min-width:10rem">
+                    N. Documento <p-sortIcon field="ndocumento" />
+                </th>
+                <th pSortableColumn="telefono" style="min-width:10rem">
+                    Telefono <p-sortIcon field="telefono" />
                 </th>
                 <th style="min-width:7rem">State</th>
                 <th style="min-width:10rem"></th>
             </tr>
         </ng-template>
-        <ng-template pTemplate="body" let-categoria>
+        <ng-template pTemplate="body" let-cliente>
             <tr>
-                <td>{{ categoria.id }}</td>
-                <td>{{ categoria.nombre }}</td>
-                <td>{{ categoria.descripcion }}</td>
+                <td>{{ cliente.id }}</td>
+                <td>{{ cliente.nombre }}</td>
+                <td>{{ cliente.apellido }}</td>
+                <td>{{ cliente.direccion }}</td>
+                <td>{{ cliente.ndocumento }}</td>
+                <td>{{ cliente.telefono }}</td>
                 <td>
-                    <img [src]="categoria.nimagen?urlCategoria + categoria.nimagen : 'not-found.png'" width="50"
-                        height="42" (error)="onImageError($event)" class="shadow-4" />
+                    <p-tag *ngIf="cliente.state" [rounded]="true" severity="success" value="Activo" />
+                    <p-tag *ngIf="!cliente.state" [rounded]="true" severity="danger" value="Inactivo" />
                 </td>
                 <td>
-                    <p-tag *ngIf="categoria.state" [rounded]="true" severity="success" value="Activo" />
-                    <p-tag *ngIf="!categoria.state" [rounded]="true" severity="danger" value="Inactivo" />
-                </td>
-                <td>
-                    <p-button icon="pi pi-pencil" (onClick)="openDialog(categoria)" [raised]="true" class="mr-2"
+                    <p-button icon="pi pi-pencil" [raised]="true" (onClick)="openDialog(cliente)" class="mr-2"
                         [rounded]="true" severity="info" />
-                    <p-button icon="pi pi-image" (onClick)="openDialogPhoto(categoria)" [raised]="true" severity="help"
-                        class="mr-2" [rounded]="true" />
-                    <p-button icon="pi pi-sync" [raised]="true" (onClick)="onStateChange(categoria.id)" [raised]="true"
+                    <p-button icon="pi pi-sync" [raised]="true" (onClick)="onStateChange(cliente.id)" [raised]="true"
                         severity="danger" class="mr-2" [rounded]="true" />
                 </td>
             </tr>
@@ -75,8 +78,5 @@
     </p-table>
 </div>
 
-<app-categoria-modal [dialog]="displayDialog" (dialogChange)="displayDialog = $event" (refreshList)="loadCategorias()"
-    [(categoriaId)]="idCategoriaModal" />
-
-<app-modal-photo [dialog]="displayDialogPhoto" (dialogChange)="displayDialogPhoto = $event"
-    (refreshList)="loadCategorias()" [(categoriaId)]="idCategoriaPhotoModal" />
+<app-cliente-save-modal [dialog]="displayDialog" (dialogChange)="displayDialog = $event" (refreshList)="loadClientes()"
+    [(clienteId)]="idClienteModal" />

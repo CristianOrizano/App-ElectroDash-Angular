@@ -1,9 +1,7 @@
-
-
 <!-- Modal de Crear/Editar -->
 <p-dialog [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }"
     header="{{ categoriaId != 0 ? 'Editar Categoría' : 'Nueva Categoría' }}" [(visible)]="dialog" [modal]="true"
-    [style]="{ width: '25vw' }"  (onHide)="closeModal()" [draggable]="false" styleClass="p-fluid">
+    [style]="{ width: '25vw' }" (onHide)="closeModal()" [draggable]="false" styleClass="p-fluid">
 
     <form [formGroup]="categoriaForm" (ngSubmit)="saveCategoria()">
         <div *ngIf="categoriaId ==0">
@@ -48,7 +46,7 @@
 
         <div class="flex justify-content-end mt-5">
             <p-button size="small" label="Cancelar" icon="pi pi-times" class="p-button-text mx-2"
-            (click)="closeModal()" />
+                (click)="closeModal()" />
             <p-button size="small" label="Guardar" icon="pi pi-check" type="submit" severity="success" />
         </div>
     </form>

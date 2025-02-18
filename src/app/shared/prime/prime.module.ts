@@ -26,17 +26,25 @@ import { InputSwitchModule } from 'primeng/inputswitch';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { DropdownModule } from 'primeng/dropdown';
 import { InputNumberModule } from 'primeng/inputnumber';
+import { AccordionModule } from 'primeng/accordion';
+import { FieldsetModule } from 'primeng/fieldset';
+import { RadioButtonModule } from 'primeng/radiobutton';
+import { AutoCompleteModule } from 'primeng/autocomplete';
+import { DividerModule } from 'primeng/divider';
 
 @NgModule({
   declarations: [],
-  imports: [
-    CommonModule,
-  ],
+  imports: [CommonModule],
   exports: [
     CommonModule,
     FormsModule,
     TableModule,
+    AccordionModule,
     InputNumberModule,
+    DividerModule,
+    RadioButtonModule,
+    FieldsetModule,
+    AutoCompleteModule,
     DropdownModule,
     ConfirmDialogModule,
     InputSwitchModule,
@@ -60,7 +68,7 @@ import { InputNumberModule } from 'primeng/inputnumber';
     InputTextModule,
     SidebarModule,
     StyleClassModule,
-    ChartModule
-  ]
+    ChartModule,
+  ],
 })
-export class PrimeModule { }
+export class PrimeModule {}

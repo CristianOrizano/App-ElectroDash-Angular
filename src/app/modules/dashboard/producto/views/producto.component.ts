@@ -83,6 +83,7 @@ export class ProductoComponent {
         this.notification.showSuccess('Correcto', `Éxito al cambiar estado`);
         this.loadProductos();
       },
+
       error: (err) => {
         console.error('Error al guardar:', err);
       },

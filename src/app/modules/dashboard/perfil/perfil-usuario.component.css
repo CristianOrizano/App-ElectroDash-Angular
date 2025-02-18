@@ -1,18 +1,38 @@
-.header {
-    position: relative;
-    text-align: center;
-    height: 400px;
-  }
-  
-  .cover-image {
-    width: 100%;
-    height: 200px;
-    object-fit: cover;
-  }
-  
-  .profile-picture {
-    position: absolute;
-    top: 120px;
-    left: 50%;
-    transform: translateX(-50%);
-  }
+.profile-container {
+  position: relative;
+  padding: 50px;
+  margin: 20px auto;
+  text-align: center;
+}
+
+.background-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 180px; /* Altura del fondo */
+  background-image: url("../../../../../public/fondos/cover-2.jpg");
+  background-size: cover;
+  background-position: center;
+}
+
+.profile-picture {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  border: 3px solid #ffffff;
+  top: 60px;
+  position: relative;
+}
+
+.profile-picture-container {
+  position: relative;
+  display: inline-block; /* Para que el contenedor se ajuste al tamaño de la imagen */
+}
+.profile-icon {
+  position: absolute;
+  top: 165px; /* Posición del icono relativo al avatar */
+  right: 10px; /* Posición del icono relativo al avatar */
+  padding: 6px;
+  box-shadow: 0 0 5px rgba(251, 250, 250, 0.2); /* Sombra para resaltar el icono */
+}

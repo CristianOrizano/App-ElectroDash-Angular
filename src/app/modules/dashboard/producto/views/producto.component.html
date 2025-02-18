@@ -69,8 +69,8 @@
                 <td>{{ producto.precio | currency: 'PEN':'symbol':'1.2-2':'es-PE' }}</td>
                 <td>{{ producto.stock}}</td>
                 <td>
-                    <img [src]="producto.nimagen?urlProducto + producto.nimagen : 'not-found.png'" width="50" height="42"
-                        (error)="onImageError($event)" class="shadow-4" />
+                    <img [src]="producto.nimagen?urlProducto + producto.nimagen : 'not-found.png'" width="50"
+                        height="42" (error)="onImageError($event)" class="shadow-4" />
                 </td>
                 <td>
                     <p-tag *ngIf="producto.state" [rounded]="true" severity="success" value="Activo" />

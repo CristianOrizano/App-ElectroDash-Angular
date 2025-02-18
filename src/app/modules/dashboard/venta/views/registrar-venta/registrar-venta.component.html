@@ -1,0 +1,339 @@
+<div class="px-4 py-4 mt-2 mb-2 md:px-6 lg:px-4 surface-card shadow-2 border-round ">
+    <ul class="list-none p-0 m-0 flex align-items-center font-medium mb-3">
+        <li>
+            <a class="text-500 no-underline line-height-3 cursor-pointer">Ventas</a>
+        </li>
+        <li class="px-2">
+            <i class="pi pi-angle-right text-500 line-height-3"></i>
+        </li>
+        <li>
+            <span class="text-900 line-height-3">Registrar Ventas</span>
+        </li>
+    </ul>
+    <div class="flex align-items-start flex-column lg:justify-content-between lg:flex-row">
+        <div class="font-medium text-3xl text-900">Nueva Venta</div>
+
+    </div>
+</div>
+
+<div class=" shadow-2 border-round p-2">
+    <div class="grid">
+        <div class="col-12 md:col-6 lg:col-6">
+            <div class="card flex justify-content-center">
+                <p-fieldset legend="Cliente" [toggleable]="true">
+                    <div class="formgrid grid">
+                        <div class="col-12 md:col-12 lg:col-4">
+                            <div class="field">
+                                <label for="nombre" class="font-medium">Nombre</label>
+                                <span class="p-input-icon-left">
+                                    <i class="pi pi-user"></i>
+                                    <input id="nombre" pInputText type="text" [value]="clienteSave.nombre"
+                                        class="mb-1 block w-full" disabled="true">
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="col-12 md:col-12 lg:col-4">
+                            <div class="field">
+                                <label for="apellido" class="font-medium">Apellido</label>
+                                <span class="p-input-icon-left">
+                                    <i class="pi pi-user"></i>
+                                    <input id="apellido" pInputText type="text" [value]="clienteSave.apellido"
+                                        class="mb-1 block w-full" disabled="true">
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-12 md:col-12 lg:col-3">
+                            <div class="field">
+                                <label for="dni" class="font-medium">DNI</label>
+                                <span class="p-input-icon-left">
+                                    <i class="pi pi-id-card"></i>
+                                    <input id="dni" pInputText type="text" [value]="clienteSave.ndocumento"
+                                        class="mb-1 block w-full" disabled="true">
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-12 md:col-1 lg:col-1">
+                            <p-button icon="pi pi-pencil" [raised]="true" class="mr-2" [rounded]="true" severity="info"
+                                (onClick)="showDialog()" pTooltip="Agregar Cliente" />
+                        </div>
+                    </div>
+                </p-fieldset>
+            </div>
+        </div>
+
+        <div class="col-12 md:col-6 lg:col-6">
+            <div class="card flex justify-content-center">
+                <p-fieldset legend="Usuario" [toggleable]="true">
+                    <div class="formgrid grid">
+                        <div class="col-12 md:col-12 lg:col-4">
+                            <div class="field">
+                                <label for="nombre" class="font-medium">Nombre</label>
+                                <span class="p-input-icon-left">
+                                    <i class="pi pi-user"></i>
+                                    <input id="nombre" pInputText type="text" [value]="auth?.usuario?.nombre"
+                                        class="mb-1 block w-full" disabled="true">
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-12 md:col-12 lg:col-4">
+                            <div class="field">
+                                <label for="apellido" class="font-medium">Apellido</label>
+                                <span class="p-input-icon-left">
+                                    <i class="pi pi-user"></i>
+                                    <input id="apellido" pInputText type="text" [value]="auth?.usuario?.apellido"
+                                        class="mb-1 block w-full" disabled="true">
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-12 md:col-12 lg:col-4">
+                            <div class="field">
+                                <label for="username" class="font-medium">Username</label>
+                                <span class="p-input-icon-left">
+                                    <i class="pi pi-user-edit"></i>
+                                    <input id="username" pInputText type="text" [value]="auth?.usuario?.username"
+                                        class="mb-1 block w-full" disabled="true">
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </p-fieldset>
+            </div>
+        </div>
+    </div>
+
+    <div class="grid">
+        <div class="col-12 md:col-12 lg:col-8">
+            <div class="card flex justify-content-center">
+                <p-fieldset legend="Producto" class="w-full">
+                    <div class="formgrid grid">
+                        <div class="col-12 md:col-12 lg:col-6">
+                            <div class="field">
+                                <label for="marca" class="font-medium">Nombre</label>
+                                <span class="p-fluid">
+                                    <p-autoComplete [(ngModel)]="selectedProducto" [suggestions]="productosFiltrados"
+                                        (completeMethod)="searchQuery.next($event.query)" field="descripcion" dropdown
+                                        (onSelect)="onProductoSelect($event)" [dropdown]="false">
+                                    </p-autoComplete>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-12 md:col-12 lg:col-2">
+                            <div class="field">
+                                <label for="stock" class="font-medium">Stock</label>
+                                <input id="stock" pInputText [(ngModel)]="stock" type="text" class="mb-1 block w-full"
+                                    [disabled]="true">
+                            </div>
+                        </div>
+                        <div class="col-12 md:col-12 lg:col-2">
+                            <div class="field">
+                                <label for="marca" class="font-medium">Cantidad</label>
+                                <input id="marca" pInputText [(ngModel)]="cantidad" type="number"
+                                    class="mb-1 block w-full" autocomplete="off">
+                            </div>
+                        </div>
+                        <div class="col-12 md:col-12 lg:col-2 mt-4">
+                            <p-button size="small" (onClick)="agregarProducto()" label="Agregar" icon="pi pi-check"
+                                type="submit" />
+                        </div>
+                    </div>
+                </p-fieldset>
+            </div>
+            <div class="card mt-3">
+                <p-table [value]="carrito" [tableStyle]="{ 'min-width': '50rem' }"
+                    styleClass="p-datatable-striped p-datatable-sm p-datatable-gridlines" [rowHover]="true"
+                    [scrollable]="true" scrollHeight="370px">
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th></th>
+                            <th>Producto</th>
+                            <th>Precio</th>
+                            <th>Cantidad</th>
+                            <th>Importe</th>
+                            <th></th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-product>
+                        <tr>
+                            <td>
+                                <img [src]="product.nimagen ?urlProducto + product.nimagen : 'not-found.png'" width="50"
+                                    height="42" (error)="onImageError($event)" class="shadow-4" />
+                            </td>
+                            <td>{{ product.descripcion }}</td>
+                            <td>{{ product.precio | currency: 'PEN':'symbol':'1.2-2':'es-PE' }}</td>
+                            <td>
+                                <div class="flex align-items-center">
+                                    <button pButton class="my-0" icon="pi pi-minus-circle" [text]="true" severity="info"
+                                        [rounded]="true" size="small" (click)="disminuirCantidad(product.id)"
+                                        [disabled]="product.cantidad <= 1"> </button>
+
+                                    <span> {{ product.cantidad }}</span>
+
+                                    <button pButton class="my-0" icon="pi pi-plus-circle" [text]="true" severity="info"
+                                        [rounded]="true" size="small" (click)="aumentarCantidad(product.id)"> </button>
+                                </div>
+                            </td>
+                            <td>{{ product.subTotal | currency: 'PEN':'symbol':'1.2-2':'es-PE' }}</td>
+                            <td>
+                                <p-button icon="pi pi-trash" [text]="true" [raised]="true" [outlined]="true"
+                                    severity="danger" [rounded]="true" size="small"
+                                    (click)="eliminarProducto(product.id)">
+                                </p-button>
+                            </td>
+                        </tr>
+                    </ng-template>
+                    <!-- Mensaje cuando el carrito está vacío -->
+                    <ng-template pTemplate="emptymessage">
+                        <tr>
+                            <td colspan="6" class="text-center p-3">
+                                <i class="pi pi-shopping-cart text-3xl text-gray-500"></i>
+                                <p class="text-gray-500 mt-2">No hay productos agregados</p>
+                            </td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+            </div>
+        </div>
+        <div class="col-12 md:col-12 lg:col-4">
+            <div class="card flex justify-content-center">
+                <p-card header="Datos de la venta" class="w-full mt-3">
+
+                    <div class="field grid mt-2">
+                        <label class="col-6 font-medium">Fecha:</label>
+                        <div class="col-6 text-right font-medium">
+                            {{ fechaHoraActual | date: 'dd/MM/yyyy' }}
+                        </div>
+                    </div>
+
+                    <div class="field grid mt-3">
+                        <label class="col-6 font-medium">Tipo venta</label>
+                    </div>
+
+                    <div class="card flex justify-content-center">
+                        <div class="flex flex-wrap gap-3">
+                            <div class="flex align-items-center">
+                                <p-radioButton name="tipoVenta" value="Contado" [(ngModel)]="tipoVenta"
+                                    inputId="ingredient1" />
+                                <label for="ingredient1" class="ml-2">
+                                    Contado
+                                </label>
+                            </div>
+
+                            <div class="flex align-items-center">
+                                <p-radioButton name="tipoVenta" value="Credito" [(ngModel)]="tipoVenta"
+                                    inputId="ingredient2" />
+                                <label for="ingredient2" class="ml-2">
+                                    Credito
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Mostrar solo si es "Contado" -->
+                    <div *ngIf="tipoVenta === 'Contado'">
+                        <!-- Monto Pagado -->
+                        <div class="field grid mt-3">
+                            <label class="col-6 font-medium">Monto Pagado:</label>
+                            <div class="col-6">
+
+
+                                <p-inputNumber [(ngModel)]="montoPagado" [min]="0" mode="currency" currency="PEN"
+                                    locale="es-PE" (ngModelChange)="calcularCambio()"></p-inputNumber>
+                            </div>
+                        </div>
+
+                        <!-- Cambio -->
+                        <div class="field grid mt-3">
+                            <label class="col-6 font-medium">Cambio:</label>
+                            <div class="col-6 text-right font-bold text-blue-500">
+                                {{ cambio | currency: 'PEN':'symbol':'1.2-2':'es-PE' }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Descuento -->
+                    <div class="field grid mt-5">
+                        <label class="col-6 font-medium">Aplicar Descuento (%):</label>
+                        <div class="col-3">
+                            <p-dropdown [options]="descuentoOpciones" [(ngModel)]="descuentoSeleccionado"></p-dropdown>
+                        </div>
+                        <div class="col-3">
+
+                            <p-button icon="pi pi-money-bill" [rounded]="true" [outlined]="true" [raised]="true"
+                                severity="info" (onClick)="aplicarDescuento()" pTooltip="Aplicar descuento" />
+                        </div>
+                    </div>
+
+                    <!-- Subtotal -->
+                    <div class="field grid mt-3">
+                        <label class="col-6 font-medium">Subtotal:</label>
+                        <div class="col-6 text-right font-bold">
+                            {{ subTotal | currency: 'PEN':'symbol':'1.2-2':'es-PE' }}
+                        </div>
+                    </div>
+
+                    <div class="field grid mt-3">
+                        <label class="col-6 font-medium">Descuento:</label>
+                        <div class="col-6 text-right font-bold">
+                            -{{ descuentoAplicado | currency: 'PEN':'symbol':'1.2-2':'es-PE' }}
+                        </div>
+                    </div>
+
+                    <p-divider />
+                    <!-- Total a Pagar -->
+                    <div class="field grid mt-3 ">
+                        <label class="col-6 font-medium text-xl">Total a pagar:</label>
+                        <div class="col-6 text-right font-bold text-green-500 text-xl">
+                            {{ total| currency: 'PEN':'symbol':'1.2-2':'es-PE' }}
+                        </div>
+                    </div>
+                </p-card>
+            </div>
+        </div>
+    </div>
+    <div class="grid flex justify-content-center mt-5 mb-3">
+        <div class="col-12 md:col-8 lg:col-6 flex justify-content-center gap-3">
+            <button pButton pRipple label="Guardar" (click)="guardarBoleta()" icon="pi pi-check"
+                class="p-button-success w-full"></button>
+            <button pButton pRipple label="Cancelar" (click)="cancelarCompra()" icon="pi pi-times"
+                class="p-button-danger w-full"></button>
+        </div>
+    </div>
+</div>
+
+<p-dialog header="Agregar Cliente" [modal]="true" [draggable]="false"
+    [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" [(visible)]="visible" [style]="{ width: '40rem' }">
+
+    <!-- Input para buscar cliente -->
+    <p-floatLabel>
+        <input pInputText id="username" class="w-full" [(ngModel)]="nombreCliente" (input)="filtrarClientes()"
+            autocomplete="off" />
+        <label for="username">Nombre Cliente</label>
+    </p-floatLabel>
+
+    <!-- Tabla con resultados filtrados -->
+    <p-table [value]="clientesFiltrados" [paginator]="false">
+        <ng-template pTemplate="header">
+            <tr>
+                <th>Nombre</th>
+                <th>Apellido</th>
+                <th>N. Documento</th>
+                <th></th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-cliente>
+            <tr>
+                <td>{{ cliente.nombre }}</td>
+                <td>{{ cliente.apellido }}</td>
+                <td>{{ cliente.ndocumento }}</td>
+                <td>
+                    <p-button label="" icon="pi pi-check" (onClick)="seleccionarCliente(cliente)" />
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+    <!-- Mensaje cuando no hay coincidencias -->
+    <div *ngIf="clientesFiltrados.length === 0 && nombreCliente">
+        <p class="text-red-500 text-center mt-2">No se encontraron resultados</p>
+    </div>
+</p-dialog>

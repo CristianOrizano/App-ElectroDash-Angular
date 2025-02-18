@@ -14,11 +14,14 @@ export class PerfilUsuarioComponent {
   private authService = inject(AuthService);
   auth!: LoginResponse | null;
   tableData: { campo: string; dato: any }[] = [];
+  visible: boolean = false;
 
   ngOnInit() {
     this.auth = this.authService.getAuthorization();
     if (this.auth && this.auth.usuario) {
-      const roles = this.auth.usuario.roles.map((role) => role.nombre).join(', ');
+      const roles = this.auth.usuario.roles
+        .map((role) => role.nombre)
+        .join(', ');
       this.tableData = [
         { campo: 'ID', dato: this.auth.usuario.id },
         { campo: 'Nombre', dato: this.auth.usuario.nombre },
@@ -28,5 +31,11 @@ export class PerfilUsuarioComponent {
         { campo: 'Password', dato: this.auth.usuario.password },
       ];
     }
+  }
+  onImageError(event: Event) {
+    (event.target as HTMLImageElement).src = 'not-found.png';
+  }
+  showDialog() {
+    this.visible = true;
   }
 }
