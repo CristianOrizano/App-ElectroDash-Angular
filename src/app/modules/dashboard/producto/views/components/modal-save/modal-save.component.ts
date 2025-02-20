@@ -55,6 +55,7 @@ export class ModalSaveComponent implements OnInit, OnChanges {
       marca: ['', Validators.required],
       precio: [null, Validators.required],
       stock: [null, Validators.required],
+      descuento: [null, Validators.required],
       nimagen: [null],
     });
   }

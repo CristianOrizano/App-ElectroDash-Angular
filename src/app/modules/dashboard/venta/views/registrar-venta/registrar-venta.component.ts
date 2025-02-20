@@ -170,15 +170,18 @@ export class RegistrarVentaComponent {
     if (!this.productoSave || !this.productoSave.id) {
       return;
     }
-
     if (!this.cantidad || this.cantidad <= 0) {
       return;
     }
+    const descuento = this.productoSave.descuento
+      ? this.productoSave.descuento / 100
+      : 0;
+    const precioFinal = this.productoSave.precio * (1 - descuento);
     const nuevoProducto: CarritoSave = {
       id: this.productoSave.id,
       nimagen: this.productoSave.nimagen,
       descripcion: this.productoSave.descripcion,
-      precio: this.productoSave.precio,
+      precio: precioFinal,
       cantidad: this.cantidad,
       subTotal: this.productoSave.precio * this.cantidad,
     };

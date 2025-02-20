@@ -31,6 +31,8 @@ import { FieldsetModule } from 'primeng/fieldset';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { DividerModule } from 'primeng/divider';
+import { OverlayPanelModule } from 'primeng/overlaypanel';
+import { ScrollPanelModule } from 'primeng/scrollpanel';
 
 @NgModule({
   declarations: [],
@@ -40,7 +42,9 @@ import { DividerModule } from 'primeng/divider';
     FormsModule,
     TableModule,
     AccordionModule,
+    OverlayPanelModule,
     InputNumberModule,
+    ScrollPanelModule,
     DividerModule,
     RadioButtonModule,
     FieldsetModule,

@@ -99,6 +99,7 @@ export class ModalPhotoProductoComponent implements OnChanges {
           this.photoSelected = this.urlProducto + response.nimagen;
         }
         this.dataProducto = {
+          descuento: response.descuento,
           descripcion: response.descripcion,
           idCategoria: response.categoria.id,
           marca: response.marca,

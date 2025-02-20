@@ -81,7 +81,7 @@
                 </div>
 
             </div>
-            <div class="col-12 md:col-6 lg:col-6">
+            <div class="col-12 md:col-6 lg:col-4">
                 <div class="field">
                     <label for="precio">Precio</label>
                     <p-inputNumber placeholder="Ingrese Precio" inputId="currency-pen" mode="currency" currency="PEN"
@@ -94,7 +94,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-12 md:col-6 lg:col-6">
+            <div class="col-12 md:col-6 lg:col-4">
                 <div class="field">
                     <label for="stock">Stock</label>
                     <p-inputNumber placeholder="Ingrese Stock" inputId="minmax" [min]="1" [max]="50"
@@ -103,6 +103,19 @@
                     <div *ngIf="productoForm.get('stock')?.invalid && productoForm.get('stock')?.touched"
                         class="text-red-500">
                         <small *ngIf="productoForm.get('stock')?.hasError('required')">El stock es
+                            requerido.</small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 md:col-6 lg:col-4">
+                <div class="field">
+                    <label for="stock">Descuento</label>
+                    <p-inputNumber placeholder="Ingrese Descuento" inputId="minmax" [min]="0" [max]="50"
+                        formControlName="descuento" />
+
+                    <div *ngIf="productoForm.get('descuento')?.invalid && productoForm.get('descuento')?.touched"
+                        class="text-red-500">
+                        <small *ngIf="productoForm.get('descuento')?.hasError('required')">El descuento es
                             requerido.</small>
                     </div>
                 </div>

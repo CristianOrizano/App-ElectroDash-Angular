@@ -1,10 +1,8 @@
 <p-dialog [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" header="Cambiar Imagen" [(visible)]="dialog"
-    [modal]="true" [style]="{ width: '25vw' }" (onHide)="closeModal()" [draggable]="false" styleClass="p-fluid">
+    [modal]="true" [style]="{ width: '27vw' }" (onHide)="closeModal()" [draggable]="false" styleClass="p-fluid">
 
     <img class="block m-auto shadow-8 mb-2 border-round" [src]="photoSelected ||'not-found.png'"
-    (error)="onImageError($event)"   
-    width="270px"
-        height="270px" />
+        (error)="onImageError($event)" width="320px" height="280px" />
 
     <div class="field">
         <input type="file" accept=".png, .jpg, .jpeg" #fileInput (change)="onPhotoSelected($event)"
@@ -17,10 +15,11 @@
             <small>El archivo debe ser una imagen válida (PNG, JPG, JPEG).</small>
         </div>
     </div>
- 
+
     <div class="flex justify-content-end mt-8 surface-ground p-2">
         <p-button size="small" label="Cancelar" icon="pi pi-times" class="p-button-text mx-2" (click)="closeModal()" />
-        <p-button size="small" (click)="updateImage()" [disabled]="!fileSelected || photoError" label="Guardar" icon="pi pi-check" type="submit" severity="success" />
+        <p-button size="small" (click)="updateImage()" [disabled]="!fileSelected || photoError" label="Guardar"
+            icon="pi pi-check" type="submit" severity="success" />
     </div>
 
 </p-dialog>

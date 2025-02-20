@@ -208,7 +208,13 @@
         <ng-template pTemplate="end">
 
             <div class="flex align-items-center gap-2">
-                <i class="pi pi-bell text-white-alpha-90 text-2xl mx-3" pBadge value="2" severity="danger"></i>
+                <i class="pi pi-bell text-white-alpha-90 text-2xl mx-3  cursor-pointer"
+                    (click)="toggleNotificaciones($event)">
+                    <span pBadge [value]="notificaciones.length" severity="danger" *ngIf="notificaciones.length > 0"
+                        [ngClass]="{'blink-badge': hayNotificacion}">
+                    </span>
+                </i>
+
                 <p-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png" shape="circle" />
                 <span class="font-medio text-white-alpha-90">{{auth?.usuario?.nombre}}
                     {{auth?.usuario?.apellido}}</span>
@@ -248,3 +254,43 @@
         </a>
     </div>
 </div>
+
+<!-- OverlayPanel (Dropdown de Notificaciones) -->
+<p-overlayPanel #overlayPanel [dismissable]="true">
+    <div class=" w-20rem">
+        <h5 class="mb-2 font-semibold">Notificaciones</h5>
+        <p-scrollPanel [style]="{  height: '340px' }" styleClass="custombar2">
+            <ng-container *ngIf="notificaciones.length > 0; else sinNotificaciones">
+                <ul class="list-none p-0 m-0">
+                    <li *ngFor="let notificacion of notificaciones" class="mb-2">
+                        <div class="flex gap-3 p-2 border-round-lg bg-blue-50 border-2 border-400 shadow-md
+                    cursor-pointer" (click)="marcarComoLeida(notificacion)">
+                            <!-- Icono -->
+                            <div class="flex align-items-center justify-content-center w-4rem h-4rem  border-round-lg">
+
+                                <img [src]="notificacion.producto.nimagen?urlProducto + notificacion.producto.nimagen : 'not-found.png'"
+                                    width="50" height="50" (error)="onImageError($event)" class=" border-round-lg" />
+                            </div>
+
+                            <!-- Información -->
+                            <div class="flex-1">
+                                <div class="text-blue-900 font-bold my-1">{{ "Stock Bajo" }}</div>
+                                <div class="text-xs text-gray-700">{{ notificacion.producto.descripcion }}</div>
+
+                            </div>
+                            <div class="text-xs text-700 whitespace-nowrap">
+                                {{ notificacion.fecha | date: 'yyyy-MM-dd HH:mm:ss' }}
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </ng-container>
+        </p-scrollPanel>
+        <ng-template #sinNotificaciones>
+            <div class="flex flex-column align-items-center justify-content-center h-10rem text-gray-500">
+                <i class="pi pi-bell-slash text-4xl mb-2"></i>
+                <p class="m-0">No hay notificaciones pendientes.</p>
+            </div>
+        </ng-template>
+    </div>
+</p-overlayPanel>

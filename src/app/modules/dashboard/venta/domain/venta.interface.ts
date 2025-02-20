@@ -1,3 +1,6 @@
+import { UsuarioResponse } from '@/modules/auth/domain/auth.interface';
+import { ClienteResponse } from '../../cliente/domain/cliente.interface';
+
 export interface CarritoSave {
   id: number;
   nimagen: string;
@@ -19,4 +22,12 @@ export interface VentaRequest {
 export interface DetalleVentaRequest {
   idProducto: number;
   cantidad: number;
+}
+
+export interface BoletaResponse {
+  fechaEmision: string;
+  cliente: ClienteResponse;
+  usuario: UsuarioResponse;
+  tipoVenta: string;
+  total: number;
 }

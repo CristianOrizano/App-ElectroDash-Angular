@@ -1,5 +1,9 @@
 import { inject, Injectable } from '@angular/core';
-import { CarritoSave, VentaRequest } from '../domain/venta.interface';
+import {
+  BoletaResponse,
+  CarritoSave,
+  VentaRequest,
+} from '../domain/venta.interface';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { HttpClient } from '@angular/common/http';
@@ -19,6 +23,10 @@ export class VentaService {
 
   generarBoleta(data: VentaRequest): Observable<string> {
     return this.http.post<string>(`${this.baseUrl}/api/boleta/guardar`, data);
+  }
+
+  findAll(): Observable<BoletaResponse[]> {
+    return this.http.get<BoletaResponse[]>(`${this.baseUrl}/api/boleta`);
   }
 
   private guardarCarrito() {

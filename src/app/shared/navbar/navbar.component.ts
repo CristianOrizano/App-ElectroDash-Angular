@@ -5,6 +5,12 @@ import { Router, RouterOutlet } from '@angular/router';
 import { PrimeModule } from '../prime/prime.module';
 import { AuthService } from '@/modules/auth/infraestructure/auth.service';
 import { LoginResponse } from '@/modules/auth/domain/auth.interface';
+import { OverlayPanel } from 'primeng/overlaypanel';
+import {
+  NotificacionResponse,
+  NotificacionService,
+} from '@/core/services/notificacion.service';
+import { urlproducto } from '@/core/constantes/constantes';
 
 @Component({
   selector: 'app-navbar',
@@ -16,11 +22,16 @@ import { LoginResponse } from '@/modules/auth/domain/auth.interface';
 export class NavbarComponent implements OnInit {
   private authService = inject(AuthService);
   private router = inject(Router);
-  auth!: LoginResponse | null;
+  private notificacionService = inject(NotificacionService);
 
+  auth!: LoginResponse | null;
+  urlProducto: string = urlproducto;
   items: MenuItem[] | undefined;
   sidebarVisible: boolean = false;
   @ViewChild('sidebarRef') sidebarRef!: Sidebar;
+  @ViewChild('overlayPanel') overlayPanel!: OverlayPanel;
+  hayNotificacion: boolean = false;
+  notificaciones: NotificacionResponse[] = [];
 
   closeCallback(e: any): void {
     this.sidebarRef.close(e);
@@ -33,5 +44,36 @@ export class NavbarComponent implements OnInit {
 
   ngOnInit() {
     this.auth = this.authService.getAuthorization();
+    this.cargarNotificaciones();
+  }
+
+  cargarNotificaciones() {
+    this.notificacionService.findAll().subscribe((data) => {
+      this.notificaciones = data;
+    });
+  }
+
+  toggleNotificaciones(event: Event) {
+    this.overlayPanel.toggle(event);
+    this.hayNotificacion = false; // Deja de parpadear cuando se abre el panel
+  }
+
+  marcarComoLeida(notificacion: NotificacionResponse) {
+    if (!notificacion.state) return;
+    this.notificacionService.delete(notificacion.id).subscribe({
+      next: () => {
+        // Marcar como leida en el frontend
+        this.notificaciones = this.notificaciones.filter(
+          (n) => n.id !== notificacion.id
+        );
+      },
+      error: (error) => {
+        console.error('Error al marcar como leída:', error);
+      },
+    });
+  }
+
+  onImageError(event: Event) {
+    (event.target as HTMLImageElement).src = 'not-found.png';
   }
 }
