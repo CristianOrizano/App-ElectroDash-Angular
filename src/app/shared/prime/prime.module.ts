@@ -33,6 +33,8 @@ import { AutoCompleteModule } from 'primeng/autocomplete';
 import { DividerModule } from 'primeng/divider';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { ScrollPanelModule } from 'primeng/scrollpanel';
+import { TabViewModule } from 'primeng/tabview';
+import { CarouselModule } from 'primeng/carousel';
 
 @NgModule({
   declarations: [],
@@ -41,7 +43,9 @@ import { ScrollPanelModule } from 'primeng/scrollpanel';
     CommonModule,
     FormsModule,
     TableModule,
+    TabViewModule,
     AccordionModule,
+    CarouselModule,
     OverlayPanelModule,
     InputNumberModule,
     ScrollPanelModule,

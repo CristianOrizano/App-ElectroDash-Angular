@@ -26,6 +26,7 @@ import {
 } from '@/modules/dashboard/cliente/domain/cliente.interface';
 import { ClienteService } from '@/modules/dashboard/cliente/infraestructure/cliente.service';
 import { NotificationService } from '@/core/services/notification-service';
+import { NotificacionProductoService } from '@/core/services/notificacion.producto.service';
 
 @Component({
   selector: 'app-registrar-venta',
@@ -40,6 +41,7 @@ export class RegistrarVentaComponent {
   private authService = inject(AuthService);
   private clienteService = inject(ClienteService);
   private notification = inject(NotificationService);
+  private notificacionService = inject(NotificacionProductoService);
 
   tipoVenta: string = 'Credito';
   products!: any[];
@@ -83,14 +85,9 @@ export class RegistrarVentaComponent {
 
   ngOnInit(): void {
     // Suscribirse al input con debounce para evitar múltiples llamadas a la API
-    this.searchQuery
-      .pipe(
-        debounceTime(300), // Espera 300ms después de que el usuario deje de escribir
-        switchMap((query) => this.filtrarProductos(query))
-      )
-      .subscribe((resultados) => {
-        this.productosFiltrados = resultados;
-      });
+    this.searchQuery.pipe(debounceTime(300)).subscribe((query) => {
+      this.filtrarProductosSeacrh(query);
+    });
 
     // Obtener todos los productos al iniciar
     this.productoService.findAll().subscribe((productos) => {
@@ -112,22 +109,6 @@ export class RegistrarVentaComponent {
   }
   showDialog() {
     this.visible = true;
-  }
-
-  filtrarProductos(query: string): Observable<ProductoResponse[]> {
-    return this.productosSubject.pipe(
-      map((productos) => {
-        if (!query) {
-          return [];
-        }
-        // Filtra los productos que coinciden con la consulta
-        const productosFiltrados = productos.filter((p) =>
-          p.descripcion.toLowerCase().includes(query.toLowerCase())
-        );
-        // Devuelve solo los primeros 10 productos que coinciden
-        return productosFiltrados.slice(0, 10);
-      })
-    );
   }
 
   aplicarDescuento() {
@@ -191,7 +172,16 @@ export class RegistrarVentaComponent {
     this.stock = 0;
     this.cantidad = 1;
   }
-  //
+
+  filtrarProductosSeacrh(event: any): void {
+    // Filtra los clientes que coincidan con el nombre y limita a 5 resultados
+    this.productosFiltrados = this.productos
+      .filter((producto) =>
+        producto.descripcion.toLowerCase().includes(event.toLowerCase())
+      )
+      .slice(0, 5);
+  }
+
   filtrarClientes(): void {
     if (!this.nombreCliente) {
       this.clientesFiltrados = [];
@@ -230,7 +220,6 @@ export class RegistrarVentaComponent {
     }));
 
     const boleta: VentaRequest = {
-      fechaEmision: new Date().toISOString(),
       idCliente: this.clienteSave.id,
       idUsuario: this.auth?.usuario.id as number,
       tipoVenta: this.tipoVenta,
@@ -241,6 +230,8 @@ export class RegistrarVentaComponent {
     this.carritoService.generarBoleta(boleta).subscribe({
       next: () => {
         this.notification.showSuccess('Correcto', `Éxito al guardar`);
+        //  Actualizar notificaciones
+        this.notificacionService.findAllNotificacion();
         this.cancelarCompra();
       },
       error: (error) => {

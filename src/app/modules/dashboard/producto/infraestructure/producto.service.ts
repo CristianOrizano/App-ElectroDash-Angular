@@ -5,9 +5,11 @@ import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import {
+  ProductoFilterRequest,
   ProductoRequest,
   ProductoResponse,
 } from '../domain/producto.interface';
+import { stringify } from 'qs';
 
 @Injectable({
   providedIn: 'root',
@@ -17,17 +19,12 @@ export class ProductoService {
   private http = inject(HttpClient);
 
   findAllPaginated(
-    filter: PaginatedRequest
+    filter: ProductoFilterRequest
   ): Observable<PaginatedResponse<ProductoResponse>> {
-    const params = new HttpParams()
-      .set('page', filter.page.toString())
-      .set('size', filter.size.toString())
-      .set('sortBy', filter.sortBy)
-      .set('sortDir', filter.sortDir);
+    const params = stringify(filter, { skipNulls: true });
 
     return this.http.get<PaginatedResponse<ProductoResponse>>(
-      `${this.baseUrl}/api/producto/paginated`,
-      { params }
+      `${this.baseUrl}/api/producto/paginated?${params}`
     );
   }
 

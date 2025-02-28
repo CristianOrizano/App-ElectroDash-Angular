@@ -32,3 +32,10 @@
 .blink-badge {
   animation: blink 1s infinite;
 }
+
+@media (max-width: 767px) {
+  /* Oculta la imagen en pantallas menores a 768px */
+  .logo {
+    display: none;
+  }
+}

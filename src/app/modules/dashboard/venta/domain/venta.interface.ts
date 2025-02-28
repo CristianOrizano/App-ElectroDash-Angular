@@ -1,5 +1,6 @@
 import { UsuarioResponse } from '@/modules/auth/domain/auth.interface';
 import { ClienteResponse } from '../../cliente/domain/cliente.interface';
+import { ProductoResponse } from '../../producto/domain/producto.interface';
 
 export interface CarritoSave {
   id: number;
@@ -11,7 +12,6 @@ export interface CarritoSave {
 }
 
 export interface VentaRequest {
-  fechaEmision: string; // O Date si deseas manejarlo como objeto Date
   idCliente: number;
   idUsuario: number;
   tipoVenta: string;
@@ -25,9 +25,22 @@ export interface DetalleVentaRequest {
 }
 
 export interface BoletaResponse {
+  id: number;
   fechaEmision: string;
   cliente: ClienteResponse;
   usuario: UsuarioResponse;
   tipoVenta: string;
   total: number;
+}
+
+export interface DetalleBoletaResponse {
+  id: number;
+  cantidad: number;
+  boleta: BoletaResponse;
+  producto: ProductoResponse;
+}
+
+export interface BoletaFilterFechas {
+  fechaInicio: string;
+  fechaFin: string;
 }

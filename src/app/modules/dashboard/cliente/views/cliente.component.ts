@@ -3,7 +3,10 @@ import { ClienteService } from '../infraestructure/cliente.service';
 import { ConfirmationService } from 'primeng/api';
 import { NotificationService } from '@/core/services/notification-service';
 import { PaginatedRequest } from '@/shared/page/page.request';
-import { ClienteResponse } from '../domain/cliente.interface';
+import {
+  ClienteFilterRequest,
+  ClienteResponse,
+} from '../domain/cliente.interface';
 import { PrimeModule } from '@/shared/prime/prime.module';
 import { SkeletonComponent } from '@/shared/skeleton/skeleton.component';
 import { ClienteSaveModalComponent } from './components/cliente-save-modal/cliente-save-modal.component';
@@ -23,10 +26,14 @@ export class ClienteComponent {
   displayDialog: boolean = false;
   isLoading: boolean = true;
   idClienteModal: number = 0;
+  estadoOptions = [
+    { nombre: 'Activo', valor: true },
+    { nombre: 'Inactivo', valor: false },
+  ];
   //api
   dataCliente!: ClienteResponse[];
   totalElements!: number;
-  clienteFilter: PaginatedRequest = {
+  clienteFilter: ClienteFilterRequest = {
     page: 1,
     size: 10,
     sortBy: 'id',
@@ -82,6 +89,19 @@ export class ClienteComponent {
   openDialog(cliente?: ClienteResponse) {
     this.idClienteModal = cliente?.id || 0;
     this.displayDialog = true;
+  }
+
+  buscarClientes() {
+    if (this.clienteFilter.nombre?.trim() === '') {
+      this.clienteFilter.nombre = null;
+    }
+    if (this.clienteFilter.apellido?.trim() === '') {
+      this.clienteFilter.apellido = null;
+    }
+    if (this.clienteFilter.direccion?.trim() === '') {
+      this.clienteFilter.direccion = null;
+    }
+    this.loadClientes();
   }
 
   onLazyLoad(event: any) {

@@ -1,12 +1,17 @@
 import { inject, Injectable } from '@angular/core';
 import {
+  BoletaFilterFechas,
   BoletaResponse,
   CarritoSave,
+  DetalleBoletaResponse,
   VentaRequest,
 } from '../domain/venta.interface';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { PaginatedRequest } from '@/shared/page/page.request';
+import { PaginatedResponse } from '@/shared/page/page.response';
+import { stringify } from 'qs';
 
 @Injectable({
   providedIn: 'root',
@@ -29,6 +34,37 @@ export class VentaService {
     return this.http.get<BoletaResponse[]>(`${this.baseUrl}/api/boleta`);
   }
 
+  findByFilterDates(
+    filterFechas: BoletaFilterFechas
+  ): Observable<BoletaResponse[]> {
+    const params = stringify(filterFechas, { skipNulls: true });
+
+    return this.http.get<BoletaResponse[]>(
+      `${this.baseUrl}/api/boleta/filtrar?${params}`
+    );
+  }
+
+  findByIdDetalleBoleta(id: number): Observable<DetalleBoletaResponse[]> {
+    return this.http.get<DetalleBoletaResponse[]>(
+      `${this.baseUrl}/api/detalleboleta/buscarporidboleta/${id}`
+    );
+  }
+
+  findAllPaginated(
+    filter: PaginatedRequest
+  ): Observable<PaginatedResponse<BoletaResponse>> {
+    const params = new HttpParams()
+      .set('page', filter.page.toString())
+      .set('size', filter.size.toString())
+      .set('sortBy', filter.sortBy)
+      .set('sortDir', filter.sortDir);
+
+    return this.http.get<PaginatedResponse<BoletaResponse>>(
+      `${this.baseUrl}/api/boleta/paginated`,
+      { params }
+    );
+  }
+
   private guardarCarrito() {
     localStorage.setItem('carrito', JSON.stringify(this.carrito));
     this.carritoSubject.next([...this.carrito]); // Notificar cambios
@@ -48,7 +84,6 @@ export class VentaService {
 
   agregarProducto(producto: CarritoSave) {
     const index = this.carrito.findIndex((p) => p.id === producto.id);
-
     if (index === -1) {
       // Solo agrega el producto si no existe en el carrito
       this.carrito.push({

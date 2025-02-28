@@ -2,6 +2,9 @@ import { Component, inject, OnInit } from '@angular/core';
 import { PrimeModule } from '../../../shared/prime/prime.module';
 import { VentaService } from '../venta/infraestructure/venta.service';
 import { BoletaResponse } from '../venta/domain/venta.interface';
+import { ProductoService } from '../producto/infraestructure/producto.service';
+import { CategoriaService } from '../categoria/infraestructure/categoria.service';
+import { ClienteService } from '../cliente/infraestructure/cliente.service';
 
 @Component({
   selector: 'app-home',
@@ -12,6 +15,16 @@ import { BoletaResponse } from '../venta/domain/venta.interface';
 })
 export class HomeComponent implements OnInit {
   private ventaService = inject(VentaService);
+  private productoService = inject(ProductoService);
+  private categoriaService = inject(CategoriaService);
+  private clienteService = inject(ClienteService);
+
+  totalClientes: number = 0;
+  totalProductos: number = 0;
+  totalCategorias: number = 0;
+  totalUsuarios: number = 0;
+  totalVentas: number = 0;
+
   basicData: any;
   basicOptions: any;
   dataVentas: BoletaResponse[] = [];
@@ -41,6 +54,55 @@ export class HomeComponent implements OnInit {
       this.basicOptions = this.getChartOptions();
       // Generar datos para el gráfico de pastel
       this.pieData = this.prepararDatosParaPie(this.dataVentas);
+    });
+
+    this.getListCliente();
+    this.getListCategorias(), this.getListProductos();
+    this.getListVentas();
+  }
+
+  //endpoints
+  getListCliente() {
+    this.clienteService.findAll().subscribe({
+      next: (data) => {
+        this.totalClientes = data.length;
+      },
+      error: (error) => {
+        console.log('error en : ' + error);
+      },
+    });
+  }
+
+  getListCategorias() {
+    this.categoriaService.findAll().subscribe({
+      next: (data) => {
+        this.totalCategorias = data.length;
+      },
+      error: (error) => {
+        console.log('error en : ' + error);
+      },
+    });
+  }
+
+  getListProductos() {
+    this.productoService.findAll().subscribe({
+      next: (data) => {
+        this.totalProductos = data.length;
+      },
+      error: (error) => {
+        console.log('error en : ' + error);
+      },
+    });
+  }
+
+  getListVentas() {
+    this.ventaService.findAll().subscribe({
+      next: (data) => {
+        this.totalVentas = data.length;
+      },
+      error: (error) => {
+        console.log('error en : ' + error);
+      },
     });
   }
 

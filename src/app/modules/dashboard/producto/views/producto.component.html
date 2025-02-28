@@ -14,9 +14,68 @@
         <div class="font-medium text-3xl text-900">Productos</div>
 
         <div class="mt-3 lg:mt-0">
-            <button pButton pRipple (click)="openDialog()" label="Add" class="p-button-outlined mr-2"
-                icon="pi pi-user-plus"></button>
-            <button pButton pRipple label="Export" icon="pi pi-check"></button>
+            <button pButton pRipple [raised]="true" (click)="buscarProductos()" label="Buscar" icon="pi pi-search"
+                class="p-button p-button-primary  mr-2">
+            </button>
+            <button pButton pRipple [outlined]="true" (click)="openDialog()" label="Agregar"
+                class="p-button-outlined p-button-contrast" icon="pi pi-user-plus">
+            </button>
+        </div>
+    </div>
+
+    <div class="formgrid grid mt-3">
+        <div class="col-12 md:col-12 lg:col-2">
+            <p-floatLabel class="w-full">
+                <input pInputText id="descripcion" [(ngModel)]="productoFilter.descripcion" class="w-full" />
+                <label for="descripcion">Descripcion</label>
+            </p-floatLabel>
+        </div>
+        <div class="col-12 md:col-12 lg:col-2">
+            <p-floatLabel class="w-full">
+                <p-dropdown [options]="listMarca" optionLabel="nombre" [filter]="true" filterBy="nombre"
+                    [showClear]="true" placeholder="[Marca]" [(ngModel)]="productoFilter.idMarca" optionValue="id"
+                    class="w-full" id="marca">
+                    <ng-template pTemplate="selectedItem" let-selectedOption>
+                        <div class="flex align-items-center gap-2">
+                            <div>{{ selectedOption.nombre }}</div>
+                        </div>
+                    </ng-template>
+                    <ng-template let-categoria pTemplate="item">
+                        <div class="flex align-items-center gap-2">
+                            <div>{{ categoria.nombre }}</div>
+                        </div>
+                    </ng-template>
+                </p-dropdown>
+                <label for="marca">Marca</label>
+            </p-floatLabel>
+        </div>
+        <div class="col-12 md:col-12 lg:col-2">
+            <p-floatLabel class="w-full">
+                <p-dropdown [options]="listCategoria" optionLabel="nombre" [filter]="true" filterBy="nombre"
+                    [showClear]="true" placeholder="[Categoria]" [(ngModel)]="productoFilter.idCategoria"
+                    optionValue="id" class="mb-1">
+
+                    <ng-template pTemplate="selectedItem" let-selectedOption>
+                        <div class="flex align-items-center gap-2">
+                            <div>{{ selectedOption.nombre }}</div>
+                        </div>
+                    </ng-template>
+                    <ng-template let-categoria pTemplate="item">
+                        <div class="flex align-items-center gap-2">
+                            <div>{{ categoria.nombre }}</div>
+                        </div>
+                    </ng-template>
+                </p-dropdown>
+                <label for="categoria">Categoría</label>
+            </p-floatLabel>
+        </div>
+        <div class="col-12 md:col-12 lg:col-2">
+            <p-floatLabel class="w-full">
+                <p-dropdown [options]="estadoOptions" optionLabel="nombre" [(ngModel)]="productoFilter.state"
+                    optionValue="valor" placeholder="[Estado]" class="w-full" [showClear]="true" id="estado">
+                </p-dropdown>
+                <label for="estado">Estado</label>
+            </p-floatLabel>
         </div>
     </div>
 </div>
@@ -39,11 +98,11 @@
                 <th pSortableColumn="descripcion" style="min-width:15rem">
                     Descripcion <p-sortIcon field="descripcion" />
                 </th>
-                <th pSortableColumn="marca" style="min-width:10rem">
-                    Marca <p-sortIcon field="marca" />
+                <th pSortableColumn="marca.nombre" style="min-width:8rem">
+                    Marca <p-sortIcon field="marca.nombre" />
                 </th>
-                <th pSortableColumn="idCategoria" style="min-width:10rem">
-                    Categoria <p-sortIcon field="idCategoria" />
+                <th pSortableColumn="categoria.nombre" style=" min-width:10rem">
+                    Categoria <p-sortIcon field="categoria.nombre" />
                 </th>
                 <th pSortableColumn="precio" style="min-width:7rem">
                     Precio <p-sortIcon field="precio" />
@@ -64,7 +123,11 @@
             <tr [ngClass]="{'low-stock': producto.stock < 10}">
                 <td>{{ producto.id }}</td>
                 <td>{{ producto.descripcion}}</td>
-                <td>{{ producto.marca}}</td>
+                <td>
+                    <img [src]="producto.marca.nimagen?urlMarca + producto.marca.nimagen : 'not-found.png'" width="42"
+                        (error)="onImageError($event)" class="shadow-4 border-circle" style="margin-left: 15px;" />
+
+                </td>
                 <td>{{ producto.categoria.nombre}}</td>
                 <td>
                     {{ (producto.precio - (producto.precio * (producto.descuento / 100))) | currency:

@@ -35,10 +35,10 @@
 
                         <div class="col-12 md:col-12 lg:col-4">
                             <div class="field">
-                                <label for="apellido" class="font-medium">Apellido</label>
+                                <label for="telefono" class="font-medium">Telefono</label>
                                 <span class="p-input-icon-left">
                                     <i class="pi pi-user"></i>
-                                    <input id="apellido" pInputText type="text" [value]="clienteSave.apellido"
+                                    <input id="telefono" pInputText type="text" [value]="clienteSave.telefono"
                                         class="mb-1 block w-full" disabled="true">
                                 </span>
                             </div>
@@ -107,6 +107,7 @@
             <div class="card flex justify-content-center">
                 <p-fieldset legend="Producto" class="w-full">
                     <div class="formgrid grid">
+
                         <div class="col-12 md:col-12 lg:col-6">
                             <div class="field">
                                 <label for="marca" class="font-medium">Nombre</label>
@@ -114,22 +115,34 @@
                                     <p-autoComplete [(ngModel)]="selectedProducto" [suggestions]="productosFiltrados"
                                         (completeMethod)="searchQuery.next($event.query)" field="descripcion" dropdown
                                         (onSelect)="onProductoSelect($event)" [dropdown]="false">
+
+                                        <!-- Plantilla personalizada para los elementos -->
+                                        <ng-template let-producto pTemplate="item">
+                                            <div class="flex align-items-center gap-2">
+                                                <img [src]="producto.nimagen ?urlProducto + producto.nimagen : 'not-found.png'"
+                                                    style="width: 35px" />
+
+                                                <div>{{ producto.descripcion }}</div>
+                                            </div>
+                                        </ng-template>
+
                                     </p-autoComplete>
                                 </span>
                             </div>
                         </div>
+
                         <div class="col-12 md:col-12 lg:col-2">
                             <div class="field">
                                 <label for="stock" class="font-medium">Stock</label>
-                                <input id="stock" pInputText [(ngModel)]="stock" type="text" class="mb-1 block w-full"
+                                <input id="stock" pInputText [(ngModel)]="stock" type="text" class="mb-1  w-full"
                                     [disabled]="true">
                             </div>
                         </div>
                         <div class="col-12 md:col-12 lg:col-2">
                             <div class="field">
                                 <label for="marca" class="font-medium">Cantidad</label>
-                                <input id="marca" pInputText [(ngModel)]="cantidad" type="number"
-                                    class="mb-1 block w-full" autocomplete="off">
+                                <input id="marca" pInputText [(ngModel)]="cantidad" type="number" class="mb-1  w-full"
+                                    autocomplete="off">
                             </div>
                         </div>
                         <div class="col-12 md:col-12 lg:col-2 mt-4">
@@ -312,7 +325,8 @@
     </p-floatLabel>
 
     <!-- Tabla con resultados filtrados -->
-    <p-table [value]="clientesFiltrados" [paginator]="false">
+    <p-table [value]="clientesFiltrados" styleClass="p-datatable-striped p-datatable-sm p-datatable-gridlines"
+        [paginator]="false">
         <ng-template pTemplate="header">
             <tr>
                 <th>Nombre</th>
@@ -327,7 +341,8 @@
                 <td>{{ cliente.apellido }}</td>
                 <td>{{ cliente.ndocumento }}</td>
                 <td>
-                    <p-button label="" icon="pi pi-check" (onClick)="seleccionarCliente(cliente)" />
+                    <p-button label="" size="small" [rounded]="true" severity="info" icon="pi pi-check"
+                        (onClick)="seleccionarCliente(cliente)" />
                 </td>
             </tr>
         </ng-template>

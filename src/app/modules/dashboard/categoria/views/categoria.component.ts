@@ -1,5 +1,8 @@
 import { Component, inject } from '@angular/core';
-import { CategoriaResponse } from '../domain/categoria.interface';
+import {
+  CategoriaFilterRequest,
+  CategoriaResponse,
+} from '../domain/categoria.interface';
 import { ModalPhotoComponent } from './components/modal-photo/modal-photo.component';
 import { ConfirmationService } from 'primeng/api';
 import { PrimeModule } from '@/shared/prime/prime.module';
@@ -34,10 +37,14 @@ export class CategoriaComponent {
   displayDialogPhoto: boolean = false;
   idCategoriaModal: number = 0;
   idCategoriaPhotoModal: number = 0;
+  estadoOptions = [
+    { nombre: 'Activo', valor: true },
+    { nombre: 'Inactivo', valor: false },
+  ];
   //api
   dataCategoria!: CategoriaResponse[];
   totalElements!: number;
-  categoriaFilter: PaginatedRequest = {
+  categoriaFilter: CategoriaFilterRequest = {
     page: 1,
     size: 10,
     sortBy: 'id',
@@ -102,6 +109,15 @@ export class CategoriaComponent {
   openDialogPhoto(categoria?: CategoriaResponse) {
     this.idCategoriaPhotoModal = categoria?.id || 0;
     this.displayDialogPhoto = true;
+  }
+  buscarCategorias() {
+    if (this.categoriaFilter.nombre?.trim() === '') {
+      this.categoriaFilter.nombre = null;
+    }
+    if (this.categoriaFilter.descripcion?.trim() === '') {
+      this.categoriaFilter.descripcion = null;
+    }
+    this.loadCategorias();
   }
 
   onLazyLoad(event: any) {

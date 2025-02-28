@@ -5,6 +5,8 @@ import { environment } from 'src/environments/environment';
 import { ClienteRequest, ClienteResponse } from '../domain/cliente.interface';
 import { PaginatedRequest } from '@/shared/page/page.request';
 import { Observable } from 'rxjs';
+import { stringify } from 'qs';
+import { CategoriaFilterRequest } from '../../categoria/domain/categoria.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -15,17 +17,12 @@ export class ClienteService {
   private cache = new Map<string, PaginatedResponse<ClienteResponse>>();
 
   findAllPaginated(
-    filter: PaginatedRequest
+    filter: CategoriaFilterRequest
   ): Observable<PaginatedResponse<ClienteResponse>> {
-    const params = new HttpParams()
-      .set('page', filter.page.toString())
-      .set('size', filter.size.toString())
-      .set('sortBy', filter.sortBy)
-      .set('sortDir', filter.sortDir);
+    const params = stringify(filter, { skipNulls: true });
 
     return this.http.get<PaginatedResponse<ClienteResponse>>(
-      `${this.baseUrl}/api/cliente/paginated`,
-      { params }
+      `${this.baseUrl}/api/cliente/paginated?${params}`
     );
   }
 

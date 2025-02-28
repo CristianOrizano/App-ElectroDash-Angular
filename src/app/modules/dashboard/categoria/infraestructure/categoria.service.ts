@@ -2,12 +2,14 @@ import { inject, Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, of, tap } from 'rxjs';
 import {
+  CategoriaFilterRequest,
   CategoriaRequest,
   CategoriaResponse,
 } from '../domain/categoria.interface';
 import { environment } from 'src/environments/environment';
 import { PaginatedResponse } from '@/shared/page/page.response';
 import { PaginatedRequest } from '@/shared/page/page.request';
+import { stringify } from 'qs';
 
 @Injectable({
   providedIn: 'root',
@@ -18,19 +20,15 @@ export class CategoriaService {
   private cache = new Map<string, PaginatedResponse<CategoriaResponse>>();
 
   findAllPaginated(
-    filter: PaginatedRequest
+    filter: CategoriaFilterRequest
   ): Observable<PaginatedResponse<CategoriaResponse>> {
-    const params = new HttpParams()
-      .set('page', filter.page.toString())
-      .set('size', filter.size.toString())
-      .set('sortBy', filter.sortBy)
-      .set('sortDir', filter.sortDir);
+    const params = stringify(filter, { skipNulls: true });
 
     return this.http.get<PaginatedResponse<CategoriaResponse>>(
-      `${this.baseUrl}/api/categoria/paginated`,
-      { params }
+      `${this.baseUrl}/api/categoria/paginated?${params}`
     );
   }
+
   /*findAllPaginated(
     filter: PaginatedRequest
   ): Observable<PaginatedResponse<CategoriaResponse>> {

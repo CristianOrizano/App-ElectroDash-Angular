@@ -1,0 +1,98 @@
+<div class="px-4 py-4 mt-2 mb-2 md:px-6 lg:px-4 surface-card shadow-2 border-round ">
+    <ul class="list-none p-0 m-0 flex align-items-center font-medium mb-3">
+        <li>
+            <a class="text-500 no-underline line-height-3 cursor-pointer">Inventario</a>
+        </li>
+        <li class="px-2">
+            <i class="pi pi-angle-right text-500 line-height-3"></i>
+        </li>
+        <li>
+            <span class="text-900 line-height-3">Marca</span>
+        </li>
+    </ul>
+    <div class="flex align-items-start flex-column lg:justify-content-between lg:flex-row">
+        <div class="font-medium text-3xl text-900">Marcas</div>
+
+        <div class="mt-3 lg:mt-0">
+            <button pButton pRipple [raised]="true" (click)="buscarMarcas()" label="Buscar" icon="pi pi-search"
+                class="p-button p-button-primary  mr-2">
+            </button>
+            <button pButton pRipple [outlined]="true" (click)="openDialog()" label="Agregar"
+                class="p-button-outlined p-button-contrast" icon="pi pi-user-plus">
+            </button>
+        </div>
+    </div>
+    <div class="formgrid grid mt-3">
+        <div class="col-12 md:col-12 lg:col-3">
+            <p-floatLabel class="w-full">
+                <input pInputText id="descripcion" [(ngModel)]="marcaFilter.nombre" class="w-full" autocomplete="off" />
+                <label for="descripcion">Descripcion</label>
+            </p-floatLabel>
+        </div>
+
+        <div class="col-12 md:col-12 lg:col-3">
+            <p-floatLabel class="w-full">
+                <p-dropdown [options]="estadoOptions" optionLabel="nombre" [(ngModel)]="marcaFilter.state"
+                    optionValue="valor" placeholder="[Estado]" class="w-full" [showClear]="true" id="estado">
+                </p-dropdown>
+                <label for="estado">Estado</label>
+            </p-floatLabel>
+        </div>
+    </div>
+</div>
+
+<div class="surface-card shadow-2 border-round p-2">
+    <app-skeleton *ngIf="isLoading"></app-skeleton>
+
+    <p-table *ngIf="!isLoading" [value]="dataMarca" [lazy]="true" [paginator]="true" [rows]="marcaFilter.size"
+        [showCurrentPageReport]="true" styleClass="p-datatable-striped p-datatable-sm p-datatable-gridlines"
+        [tableStyle]="{ 'min-width': '50rem' }"
+        currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} registros"
+        [rowsPerPageOptions]="[10, 25, 50]" [totalRecords]="totalElements" [rowHover]="true"
+        (onLazyLoad)="onLazyLoad($event)" [scrollable]="true" scrollHeight="650px">
+
+        <ng-template pTemplate="header">
+            <tr>
+                <th pSortableColumn="id" style="min-width:7rem">
+                    <p-sortIcon field="id" /> Id
+                </th>
+                <th pSortableColumn="nombre" style="min-width:10rem">
+                    Nombre <p-sortIcon field="nombre" />
+                </th>
+                <th style="min-width:6rem">
+                    Imagen
+                </th>
+                <th style="min-width:7rem">State</th>
+                <th style="min-width:10rem"></th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-marca>
+            <tr>
+                <td>{{ marca.id }}</td>
+                <td>{{ marca.nombre }}</td>
+                <td>
+                    <img [src]="marca.nimagen?urlMarca + marca.nimagen : 'not-found.png'" width="50" height="42"
+                        (error)="onImageError($event)" class="shadow-4" />
+                </td>
+                <td>
+                    <p-tag *ngIf="marca.state" [rounded]="true" severity="success" value="Activo" />
+                    <p-tag *ngIf="!marca.state" [rounded]="true" severity="danger" value="Inactivo" />
+                </td>
+                <td>
+                    <p-button icon="pi pi-pencil" (onClick)="openDialog(marca)" [raised]="true" class="mr-2"
+                        [rounded]="true" severity="info" />
+                    <p-button icon="pi pi-image" (onClick)="openDialogPhoto(marca)" [raised]="true" severity="help"
+                        class="mr-2" [rounded]="true" />
+                    <p-button icon="pi pi-sync" [raised]="true" (onClick)="onStateChange(marca.id)" [raised]="true"
+                        severity="danger" class="mr-2" [rounded]="true" />
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>
+
+<app-modal-save-marca [dialog]="displayDialog" (dialogChange)="displayDialog = $event" (refreshList)="loadMarcas()"
+    [(marcaId)]="idMarcaModal" />
+
+<app-modal-photo-marca [dialog]="displayDialogPhoto" (dialogChange)="displayDialogPhoto = $event"
+    (refreshList)="loadMarcas()" [(marcaId)]="idMarcaPhotoModal" />

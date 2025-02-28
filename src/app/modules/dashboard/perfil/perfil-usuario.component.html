@@ -3,12 +3,12 @@
     <div class="background-image border-round"></div>
     <!-- Foto de perfil con icono -->
     <div class="profile-picture-container">
-        <img src="avatar.png" alt="Profile Picture" class="profile-picture">
+        <img [src]="auth?.usuario?.nimagen?urlUsuario+ auth?.usuario?.nimagen : 'not-found.png'" width="50" height="42"
+            (error)="onImageError($event)" class="shadow-4" alt="Profile Picture" class="profile-picture">
         <!-- Icono para abrir el modal -->
         <i class="pi pi-pencil profile-icon bg-teal-400 text-white cursor-pointer border-circle"
             (click)="showDialog()"></i>
     </div>
-
     <!-- Nombre y nombre de usuario -->
     <p class="font-medium text-xl mt-7">{{auth?.usuario?.nombre}} {{auth?.usuario?.apellido}}
         <i class="pi pi-check-circle text-green-800 font-bold text-1xl"></i>
@@ -16,47 +16,48 @@
 </div>
 
 
-
-<div class="">
-    <div class="surface-card shadow-2 border-round p-2">
-        <p-table [value]="tableData" [rowHover]="true"
-            styleClass="p-datatable-striped p-datatable-lg p-datatable-gridlines">
-            <ng-template pTemplate="header">
-                <tr>
-                    <th class="text-center" style="min-width:15rem">Campo</th>
-                    <th class="text-center" style="min-width:15rem">Dato</th>
-                </tr>
-            </ng-template>
-            <ng-template pTemplate="body" let-row>
-                <tr>
-                    <td class="text-center">{{row.campo}}</td>
-                    <td class="text-center">{{row.dato}}</td>
-                </tr>
-
-            </ng-template>
-        </p-table>
-    </div>
+<div class="surface-card shadow-3 border-round p-4">
+    <p-table [value]="tableData" [rowHover]="true"
+        styleClass="p-datatable-striped p-datatable-lg p-datatable-gridlines">
+        <ng-template pTemplate="header">
+            <tr class="bg-primary text-white">
+                <th class="text-center font-bold p-3">Campo</th>
+                <th class="text-center font-bold p-3">Dato</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-row>
+            <tr class="hover:bg-gray-200 transition-all duration-300">
+                <td class="text-center font-medium p-3">{{ row.campo }}</td>
+                <td class="text-center font-bold text-color-secondary p-3">{{ row.dato }}</td>
+            </tr>
+        </ng-template>
+    </p-table>
 </div>
 
 <p-dialog [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" header="Cambiar Imagen" [(visible)]="visible"
-    [modal]="true" [style]="{ width: '25vw' }" [draggable]="false" styleClass="p-fluid">
+    [modal]="true" [style]="{ width: '25vw' }" (onHide)="closeModal()" [draggable]="false" styleClass="p-fluid">
 
-    <img class="block m-auto shadow-8 mb-2 border-round" [src]="'not-found.png'" (error)="onImageError($event)"
-        width="270px" height="270px" />
+    <img class="block m-auto shadow-8 mb-2 border-round" [src]="photoSelected ||'not-found.png'"
+        (error)="onImageError($event)" width="270px" height="270px" />
 
     <div class="field">
-        <input type="file" accept=".png, .jpg, .jpeg" #fileInput style="display: none;">
+        <input type="file" accept=".png, .jpg, .jpeg" #fileInput (change)="onPhotoSelected($event)"
+            style="display: none;">
         <div class="flex justify-content-center">
             <p-button label="Seleccionar Imagen" [text]="true" severity="info" icon="pi pi-upload"
                 (click)="fileInput.click()" class="w-6" />
         </div>
-
+        <div *ngIf="photoError" class="text-red-500">
+            <small>El archivo debe ser una imagen válida (PNG, JPG, JPEG).</small>
+        </div>
     </div>
 
     <div class="flex justify-content-end mt-8 surface-ground p-2">
         <p-button size="small" label="Cancelar" icon="pi pi-times" class="p-button-text mx-2"
-            (onClick)="visible = false" />
-        <p-button size="small" label="Guardar" icon="pi pi-check" type="submit" severity="success" />
+            (onClick)="closeModal()" />
+
+        <p-button size="small" (click)="updateImage()" [disabled]="!fileSelected || photoError" label="Guardar"
+            icon="pi pi-check" type="submit" severity="success" />
     </div>
 
 </p-dialog>

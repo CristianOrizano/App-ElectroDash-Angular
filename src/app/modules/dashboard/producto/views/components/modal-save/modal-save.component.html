@@ -1,6 +1,6 @@
 <p-dialog [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }"
     header="{{ productoId != 0 ? 'Editar Producto' : 'Nuevo Producto' }}" [(visible)]="dialog" [modal]="true"
-    [style]="{ width: '40vw' }" (onHide)="closeModal()" [draggable]="false" styleClass="p-fluid ">
+    [style]="{ width: '40vw' }" (onHide)="closeModal()" [draggable]="false" styleClass="p-fluid">
 
     <form [formGroup]="productoForm" (ngSubmit)="saveCategoria()">
         <div class="formgrid grid">
@@ -48,14 +48,28 @@
                     </div>
                     <div class="col-12 md:col-12 lg:col-12">
                         <div class="field">
-                            <label for="marca">Marca</label>
-                            <input id="marca" pInputText type="text" placeholder="Ingrese Marca" formControlName="marca"
-                                class="mb-1">
+                            <label for="nombre">Marca</label>
+                            <p-dropdown [options]="listMarca" optionLabel="nombre" [filter]="true" filterBy="nombre"
+                                [showClear]="true" placeholder="[Seleccione Marca]" formControlName="idMarca"
+                                optionValue="id" class="mb-1">
 
-                            <div *ngIf="productoForm.get('marca')?.invalid && productoForm.get('marca')?.touched"
+                                <ng-template pTemplate="selectedItem" let-selectedOption>
+                                    <div class="flex align-items-center gap-2">
+                                        <div>{{ selectedOption.nombre }}</div>
+                                    </div>
+                                </ng-template>
+                                <ng-template let-marca pTemplate="item">
+                                    <div class="flex align-items-center gap-2">
+                                        <div>{{ marca.nombre }}</div>
+                                    </div>
+                                </ng-template>
+                            </p-dropdown>
+
+                            <div *ngIf="productoForm.get('idMarca')?.invalid && productoForm.get('idMarca')?.touched"
                                 class="text-red-500">
-                                <small *ngIf="productoForm.get('marca')?.hasError('required')">La marca es
-                                    requerido.</small>
+                                <small *ngIf="productoForm.get('idMarca')?.hasError('required')">
+                                    La categoría es obligatoria.
+                                </small>
                             </div>
                         </div>
                     </div>
@@ -64,7 +78,7 @@
             <div class="col-12 md:col-6 lg:col-6">
 
                 <img class="block m-auto shadow-8 mb-2 p-1 border-round" [src]="photoSelected ||'subir2.png'"
-                    width="220px" height="220px" />
+                    width="220px" />
 
                 <div class="field">
                     <input type="file" accept=".png, .jpg, .jpeg" #fileInput (change)="onPhotoSelected($event)"
@@ -122,7 +136,7 @@
             </div>
         </div>
 
-        <div class="flex justify-content-end mt-5">
+        <div class="flex justify-content-end mt-7">
             <p-button size="small" label="Cancelar" icon="pi pi-times" class="p-button-text mx-2"
                 (click)="closeModal()" />
             <p-button size="small" label="Guardar" icon="pi pi-check" type="submit" severity="success" />

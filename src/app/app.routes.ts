@@ -28,10 +28,24 @@ export const routes: Routes = [
           ).then((m) => m.CategoriaComponent),
       },
       {
+        path: 'marca',
+        loadComponent: () =>
+          import('./modules/dashboard/marca/views/marca.component').then(
+            (m) => m.MarcaComponent
+          ),
+      },
+      {
         path: 'producto',
         loadComponent: () =>
           import('./modules/dashboard/producto/views/producto.component').then(
             (m) => m.ProductoComponent
+          ),
+      },
+      {
+        path: 'usuario',
+        loadComponent: () =>
+          import('./modules/dashboard/usuario/views/usuario.component').then(
+            (m) => m.UsuarioComponent
           ),
       },
       {
@@ -47,6 +61,27 @@ export const routes: Routes = [
           import(
             './modules/dashboard/venta/views/registrar-venta/registrar-venta.component'
           ).then((m) => m.RegistrarVentaComponent),
+      },
+      {
+        path: 'listar-venta',
+        loadComponent: () =>
+          import(
+            './modules/dashboard/venta/views/listar-venta/listar-venta.component'
+          ).then((m) => m.ListarVentaComponent),
+      },
+      {
+        path: 'reporte-venta',
+        loadComponent: () =>
+          import(
+            './modules/dashboard/reporte/reporte-venta/reporte-venta.component'
+          ).then((m) => m.ReporteVentaComponent),
+      },
+      {
+        path: 'reporte-inventario',
+        loadComponent: () =>
+          import(
+            './modules/dashboard/reporte/reporte-inventario/reporte-inventario.component'
+          ).then((m) => m.ReporteInventarioComponent),
       },
       {
         path: 'perfil',

@@ -2,7 +2,7 @@
     [modal]="true" [style]="{ width: '27vw' }" (onHide)="closeModal()" [draggable]="false" styleClass="p-fluid">
 
     <img class="block m-auto shadow-8 mb-2 border-round" [src]="photoSelected ||'not-found.png'"
-        (error)="onImageError($event)" width="320px" height="280px" />
+        (error)="onImageError($event)" width="290px" style="max-height: 400px" />
 
     <div class="field">
         <input type="file" accept=".png, .jpg, .jpeg" #fileInput (change)="onPhotoSelected($event)"

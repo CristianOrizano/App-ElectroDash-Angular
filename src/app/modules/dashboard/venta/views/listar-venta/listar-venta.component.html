@@ -1,1 +1,208 @@
-<p>listar-venta works!</p>
+<div class="px-4 py-4 mt-2 mb-2 md:px-6 lg:px-4 surface-card shadow-2 border-round ">
+    <ul class="list-none p-0 m-0 flex align-items-center font-medium mb-3">
+        <li>
+            <a class="text-500 no-underline line-height-3 cursor-pointer">Venta</a>
+        </li>
+        <li class="px-2">
+            <i class="pi pi-angle-right text-500 line-height-3"></i>
+        </li>
+        <li>
+            <span class="text-900 line-height-3">Historial Ventas</span>
+        </li>
+    </ul>
+    <div class="flex align-items-start flex-column lg:justify-content-between lg:flex-row">
+        <div class="font-medium text-3xl text-900">Ventas</div>
+        <div class="mt-3 lg:mt-0">
+
+            <button pButton pRipple label="Export" icon="pi pi-check"></button>
+        </div>
+    </div>
+    <div class="grid mt-2">
+        <div class="col-12 md:col-6 lg:col-3">
+            <p-floatLabel class="w-full">
+                <input pInputText id="username" class="w-full" />
+                <label for="username">Username</label>
+            </p-floatLabel>
+        </div>
+        <div class="col-12 md:col-6 lg:col-3">
+            <p-floatLabel class="w-full">
+                <input pInputText id="nombre" class="w-full" />
+                <label for="nombre">Nombre</label>
+            </p-floatLabel>
+        </div>
+        <div class="col-12 md:col-6 lg:col-3">
+            <p-floatLabel class="w-full">
+                <input pInputText id="nombre" class="w-full" />
+                <label for="nombre">Nombre</label>
+            </p-floatLabel>
+        </div>
+    </div>
+
+
+</div>
+
+<div class="surface-card shadow-2 border-round p-2">
+    <app-skeleton *ngIf="isLoading"></app-skeleton>
+
+    <p-table *ngIf="!isLoading" [value]="dataBoleta" [lazy]="true" [paginator]="true" [rows]="boletaFilter.size"
+        [showCurrentPageReport]="true" styleClass="p-datatable-striped p-datatable-sm   p-datatable-gridlines"
+        [tableStyle]="{ 'min-width': '50rem' }"
+        currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} registros"
+        [rowsPerPageOptions]="[10, 25, 50]" [totalRecords]="totalElements" [rowHover]="true"
+        (onLazyLoad)="onLazyLoad($event)" [scrollable]="true" scrollHeight="650px">
+
+        <ng-template pTemplate="header">
+            <tr>
+                <th pSortableColumn="id" style="min-width:7rem">
+                    <p-sortIcon field="id" /> Id
+                </th>
+                <th pSortableColumn="fechaEmision" style="min-width:15rem">
+                    Fecha Emision <p-sortIcon field="fechaEmision" />
+                </th>
+                <th pSortableColumn="idCliente" style="min-width:10rem">
+                    Cliente <p-sortIcon field="idCliente" />
+                </th>
+                <th pSortableColumn="idUsuario" style="min-width:10rem">
+                    Vendedor <p-sortIcon field="idUsuario" />
+                </th>
+                <th pSortableColumn="tipoVenta" style="min-width:10rem">
+                    Tipo Venta <p-sortIcon field="tipoVenta" />
+                </th>
+                <th pSortableColumn="total" style="min-width:7rem">
+                    Total <p-sortIcon field="total" />
+                </th>
+                <th style="min-width:12rem"></th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-boleta>
+            <tr>
+                <td>{{ boleta.id }}</td>
+                <td>{{ boleta.fechaEmision | date:'yyyy-MM-dd HH:mm:ss' }}</td>
+                <td>{{ boleta.cliente.nombre + ' '+boleta.cliente.apellido}}</td>
+                <td>
+                    <img [src]="boleta.usuario.nimagen ? urlUsuario + boleta.usuario.nimagen : 'user-noimage.jpg'"
+                        width="40" (error)="onImageError($event)" class="shadow-4 mr-2 border-circle"
+                        style="vertical-align: middle" />
+
+                    {{ boleta.usuario.nombre + ' '+boleta.usuario.apellido}}
+                </td>
+                <td>{{ boleta.tipoVenta}}</td>
+                <td>{{ boleta.total | currency:'PEN':'symbol':'1.2-2':'es-PE'}}</td>
+                <td>
+                    <p-button icon="pi pi-eye" (onClick)="showDialog(boleta.id)" [raised]="true" [rounded]="true"
+                        class="mr-2" pTooltip="Ver Detalle" tooltipPosition="top" />
+
+                    <p-button icon="pi pi-file-pdf" (onClick)="generarReporteVenta()" [raised]="true" severity="danger"
+                        [rounded]="true" pTooltip="Generar Reporte" tooltipPosition="top" />
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>
+
+
+<p-dialog header="Detalle Venta" [modal]="true" [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }"
+    [(visible)]="visible" [style]="{ width: '60rem' }" [draggable]="false" styleClass="p-fluid">
+
+    <img src="menubanner.png" width="200" class="" />
+    <div class="grid mt-2">
+        <div class="col-12 md:col-6 lg:col-6">
+            <div class="px-3 border-2 surface-border">
+                <h3 class="text-600">Información Cliente</h3>
+                <p-divider />
+                <div class="field grid">
+                    <label class="col-5 font-bold">Nombre:</label>
+                    <div class="col-7">{{saveBoleta?.cliente?.nombre+" "+ saveBoleta?.cliente?.apellido}}</div>
+                </div>
+                <div class="field grid">
+                    <label class="col-5 font-bold">N. Doc: </label>
+                    <div class="col-7">{{saveBoleta?.cliente?.ndocumento}}</div>
+                </div>
+                <div class="field grid">
+                    <label class="col-5 font-bold">Direccion: </label>
+                    <div class="col-7">{{saveBoleta?.cliente?.direccion}}</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 md:col-6 lg:col-6">
+            <div class="px-3 border-2 surface-border">
+                <h3 class="text-600">Información de venta</h3>
+                <p-divider />
+                <div class="field grid">
+                    <label class="col-5 font-bold">Fecha Emisión:</label>
+                    <div class="col-7">{{saveBoleta?.fechaEmision | date:'yyyy-MM-dd HH:mm:ss' }}</div>
+                </div>
+                <div class="field grid">
+                    <label class="col-5 font-bold">Tipo Venta:</label>
+                    <div class="col-7">{{saveBoleta?.tipoVenta}}</div>
+                </div>
+                <div class="field grid">
+                    <label class="col-5 font-bold">Vendedor:</label>
+                    <div class="col-7">{{saveBoleta?.usuario?.nombre+" "+ saveBoleta?.usuario?.apellido}}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="card mt-3">
+        <p-table [value]="detalleBoleta" styleClass="p-datatable-striped p-datatable-sm p-datatable-gridlines"
+            [paginator]="false" [scrollable]="true" scrollHeight="370px" [rowHover]="true">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th></th>
+                    <th>Productos</th>
+                    <th>Precio</th>
+                    <th>Cantidad</th>
+                    <th>Importe</th>
+
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-detallebol>
+                <tr>
+                    <td>
+                        <img [src]="detallebol.producto.nimagen ?urlProducto + detallebol.producto.nimagen : 'not-found.png'"
+                            width="50" height="42" (error)="onImageError($event)" class="shadow-4" />
+                    </td>
+                    <td>{{ detallebol.producto.descripcion }}</td>
+                    <td>{{ detallebol.producto.precio | currency: 'PEN':'symbol':'1.2-2':'es-PE' }}</td>
+
+                    <td>{{ detallebol.cantidad }}</td>
+                    <td>
+                        {{ detallebol.producto.precio * detallebol.cantidad | currency: 'PEN':'symbol':'1.2-2':'es-PE'}}
+                    </td>
+                </tr>
+            </ng-template>
+            <!-- Footer para mostrar el subtotal -->
+            <ng-template pTemplate="footer">
+                <tr>
+                    <td colspan="4" class="text-right ">Subtotal:</td>
+                    <td class="font-medium">
+                        {{ subtotal | currency: 'PEN':'symbol':'1.2-2':'es-PE' }}
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="4" class="text-right ">Descuento:</td>
+                    <td class="font-medium">
+                        {{ subtotal -totalPagado | currency: 'PEN':'symbol':'1.2-2':'es-PE' }}
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="4" class="text-right ">Total:</td>
+                    <td class="font-medium">
+                        {{ totalPagado | currency: 'PEN':'symbol':'1.2-2':'es-PE'}}
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
+    <div class="grid flex justify-content-center mt-5 mb-3">
+        <div class="col-12 md:col-6 lg:col-6 flex justify-content-center gap-3">
+            <button pButton pRipple label="Imprimir" (click)="generarReporteVenta()" icon="pi pi-file-pdf"
+                class="p-button-info w-full"></button>
+
+            <button pButton pRipple label="Cerrar" (click)="visible=false" icon="pi pi-times"
+                class="p-button-danger w-full"></button>
+        </div>
+    </div>
+</p-dialog>

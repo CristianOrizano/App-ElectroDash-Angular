@@ -14,10 +14,7 @@ import { NotificationService } from '@/core/services/notification-service';
 import { ImageUploadService } from '@/core/services/image-upload.service';
 import { urlcategoria } from '@/core/constantes/constantes';
 import { CategoriaService } from '@/modules/dashboard/categoria/infraestructure/categoria.service';
-import {
-  CategoriaRequest,
-  CategoriaResponse,
-} from '../../../domain/categoria.interface';
+import { CategoriaRequest } from '../../../domain/categoria.interface';
 
 @Component({
   selector: 'app-modal-photo',

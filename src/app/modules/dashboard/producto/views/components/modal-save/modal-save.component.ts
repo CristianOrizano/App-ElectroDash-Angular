@@ -18,6 +18,8 @@ import { CategoriaService } from '@/modules/dashboard/categoria/infraestructure/
 import { CategoriaResponse } from '@/modules/dashboard/categoria/domain/categoria.interface';
 import { ProductoRequest } from '../../../domain/producto.interface';
 import { v4 as uuidv4 } from 'uuid';
+import { MarcaService } from '@/modules/dashboard/marca/infraestructure/marca.service';
+import { MarcaResponse } from '@/modules/dashboard/marca/domain/marca.interface';
 
 @Component({
   selector: 'app-modal-save',
@@ -35,6 +37,7 @@ export class ModalSaveComponent implements OnInit, OnChanges {
   @Output() refreshList = new EventEmitter<void>();
 
   private categoriaService = inject(CategoriaService);
+  private marcaService = inject(MarcaService);
   private productoService = inject(ProductoService);
   private notification = inject(NotificationService);
   private formBuilder = inject(FormBuilder);
@@ -46,13 +49,15 @@ export class ModalSaveComponent implements OnInit, OnChanges {
   photoError: boolean = false;
   urlProducto: string = urlproducto;
   listCategoria!: CategoriaResponse[];
+  listMarca!: MarcaResponse[];
 
   ngOnInit() {
     this.findAllCategoria();
+    this.findAllMarca();
     this.productoForm = this.formBuilder.group({
       descripcion: ['', [Validators.required]],
       idCategoria: [null, Validators.required],
-      marca: ['', Validators.required],
+      idMarca: [null, Validators.required],
       precio: [null, Validators.required],
       stock: [null, Validators.required],
       descuento: [null, Validators.required],
@@ -113,9 +118,21 @@ export class ModalSaveComponent implements OnInit, OnChanges {
         }
         this.productoForm.patchValue(response);
         this.productoForm.get('idCategoria')?.setValue(response.categoria.id);
+        this.productoForm.get('idMarca')?.setValue(response.marca.id);
       },
       error: (err) => {
         console.error('Error al guardar:', err);
+      },
+    });
+  }
+
+  findAllMarca() {
+    this.marcaService.findAll().subscribe({
+      next: (response) => {
+        this.listMarca = response;
+      },
+      error: (err) => {
+        console.error('Error al obtener:', err);
       },
     });
   }
@@ -133,7 +150,7 @@ export class ModalSaveComponent implements OnInit, OnChanges {
 
   createProducto(saveProducto: ProductoRequest) {
     this.productoService.create(saveProducto).subscribe({
-      next: (response) => {
+      next: () => {
         this.notification.showSuccess('Correcto', 'Exito al guardar');
         this.refreshList.emit(); // Emitir evento para refrescar la lista
       },

@@ -75,7 +75,7 @@ export class CategoriaModalComponent implements OnInit, OnChanges {
   async saveCategoria() {
     if (this.categoriaForm.valid) {
       const saveCategoria: CategoriaRequest = this.categoriaForm.value;
-      console.log("VALOR ENVIADO",saveCategoria)
+      console.log('VALOR ENVIADO', saveCategoria);
       if (this.categoriaId !== 0) {
         // update
         this.updateCategoria(this.categoriaId, saveCategoria);

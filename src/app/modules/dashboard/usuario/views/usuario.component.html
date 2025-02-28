@@ -1,0 +1,169 @@
+<div class="px-4 py-4 mt-2 mb-2 md:px-6 lg:px-4 surface-card shadow-2 border-round ">
+    <ul class="list-none p-0 m-0 flex align-items-center font-medium mb-3">
+        <li>
+            <a class="text-500 no-underline line-height-3 cursor-pointer">Usuario</a>
+        </li>
+        <li class="px-2">
+            <i class="pi pi-angle-right text-500 line-height-3"></i>
+        </li>
+        <li>
+            <span class="text-900 line-height-3">Lista Usuario</span>
+        </li>
+    </ul>
+    <div class="flex align-items-start flex-column lg:justify-content-between lg:flex-row">
+        <div class="font-medium text-3xl text-900">Usuarios</div>
+
+        <div class="mt-3 lg:mt-0">
+            <button pButton pRipple [raised]="true" (click)="buscarUsuarios()" label="Buscar" icon="pi pi-search"
+                class="p-button p-button-primary  mr-2">
+            </button>
+            <button pButton pRipple [outlined]="true" (click)="showDialog()" label="Agregar"
+                class="p-button-outlined p-button-contrast" icon="pi pi-user-plus">
+            </button>
+        </div>
+    </div>
+
+    <div class="formgrid grid mt-3">
+        <div class="col-12 md:col-12 lg:col-3">
+            <p-floatLabel class="w-full">
+                <input pInputText id="nombre" [(ngModel)]="usuarioFilter.nombre" class="w-full" />
+                <label for="nombre">Nombre</label>
+            </p-floatLabel>
+        </div>
+        <div class="col-12 md:col-12 lg:col-3">
+            <p-floatLabel class="w-full">
+                <input pInputText id="nombre" [(ngModel)]="usuarioFilter.apellido" class="w-full" />
+                <label for="nombre">Apellido</label>
+            </p-floatLabel>
+        </div>
+
+        <div class="col-12 md:col-12 lg:col-3">
+            <p-floatLabel class="w-full">
+                <p-dropdown [options]="estadoOptions" optionLabel="nombre" [(ngModel)]="usuarioFilter.state"
+                    optionValue="valor" placeholder="[Estado]" class="w-full" [showClear]="true" id="estado">
+                </p-dropdown>
+                <label for="estado">Estado</label>
+            </p-floatLabel>
+        </div>
+    </div>
+
+
+</div>
+
+<div class="surface-card shadow-2 border-round p-2">
+    <app-skeleton *ngIf="isLoading"></app-skeleton>
+
+    <p-table *ngIf="!isLoading" [value]="dataUsuario" [lazy]="true" [paginator]="true" [rows]="usuarioFilter.size"
+        [showCurrentPageReport]="true" styleClass="p-datatable-striped p-datatable-sm p-datatable-gridlines"
+        [tableStyle]="{ 'min-width': '50rem' }"
+        currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} registros"
+        [rowsPerPageOptions]="[10, 25, 50]" [totalRecords]="totalElements" [rowHover]="true"
+        (onLazyLoad)="onLazyLoad($event)" [scrollable]="true" scrollHeight="650px">
+
+        <ng-template pTemplate="header">
+            <tr>
+                <th pSortableColumn="id" style="min-width:5rem">
+                    <p-sortIcon field="id" /> Id
+                </th>
+                <th pSortableColumn="nombre" style="min-width:8rem">
+                    Nombre <p-sortIcon field="nombre" />
+                </th>
+                <th pSortableColumn="apellido" style="min-width:10rem">
+                    Apellido <p-sortIcon field="apellido" />
+                </th>
+                <th style="min-width:6rem">
+                    Imagen
+                </th>
+                <th pSortableColumn="username" style="min-width:10rem">
+                    Username <p-sortIcon field="username" />
+                </th>
+                <th pSortableColumn="username" style="min-width:10rem">
+                    Password <p-sortIcon field="username" />
+                </th>
+                <th style="min-width:4rem">State</th>
+                <th style="min-width:4rem"></th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-usuario>
+            <tr>
+                <td>{{ usuario.id }}</td>
+                <td>{{ usuario.nombre }}</td>
+                <td>{{ usuario.apellido }}</td>
+                <td>
+                    <img [src]="usuario.nimagen?urlUsuario + usuario.nimagen : 'user-noimage.jpg'" width="42"
+                        (error)="onImageError($event)" class="shadow-4" />
+                </td>
+                <td>{{ usuario.username }}</td>
+                <td>{{ usuario.password }}</td>
+                <td>
+                    <p-tag *ngIf="usuario.state" [rounded]="true" severity="success" value="Activo" />
+                    <p-tag *ngIf="!usuario.state" [rounded]="true" severity="danger" value="Inactivo" />
+                </td>
+                <td>
+
+                    <p-button icon="pi pi-sync" [raised]="true" (onClick)="onStateChange(usuario.id)" [raised]="true"
+                        severity="danger" class="mr-2" [rounded]="true" />
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>
+
+<p-dialog [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" header="Nuevo Usuario" [(visible)]="visible"
+    [modal]="true" [style]="{ width: '25vw' }" (onHide)="closeModal()" [draggable]="false" styleClass="p-fluid">
+
+    <form [formGroup]="usuarioForm" (ngSubmit)="saveUsuario()">
+        <div class="field">
+            <label for="nombre">Nombre</label>
+            <input id="nombre" pInputText type="text" placeholder="Ingrese Nombre" formControlName="nombre"
+                class="mb-1">
+
+            <div *ngIf="usuarioForm.get('nombre')?.invalid && usuarioForm.get('nombre')?.touched" class="text-red-500">
+                <small *ngIf="usuarioForm.get('nombre')?.hasError('required')">El nombre es requerido.</small>
+            </div>
+        </div>
+
+        <div class="field">
+            <label for="lastname1">Apellido</label>
+            <input id="apellido" pInputText placeholder="Ingrese apellido" formControlName="apellido" type="text"
+                class="mb-1" rows="3">
+
+            <div *ngIf="usuarioForm.get('apellido')?.invalid && usuarioForm.get('apellido')?.touched"
+                class="text-red-500">
+                <small *ngIf="usuarioForm.get('apellido')?.hasError('required')">El apellido es
+                    requerido.</small>
+            </div>
+        </div>
+
+        <div class="field">
+            <label for="lastname1">Username</label>
+            <input id="username" pInputText placeholder="Ingrese username" formControlName="username" type="text"
+                class="mb-1" rows="3">
+
+            <div *ngIf="usuarioForm.get('username')?.invalid && usuarioForm.get('username')?.touched"
+                class="text-red-500">
+                <small *ngIf="usuarioForm.get('username')?.hasError('required')">El username es
+                    requerido.</small>
+            </div>
+        </div>
+
+        <div class="field">
+            <label for="password">Password</label>
+            <input id="password" pInputText placeholder="Ingrese password" formControlName="password" type="password"
+                class="mb-1" rows="3">
+
+            <div *ngIf="usuarioForm.get('password')?.invalid && usuarioForm.get('password')?.touched"
+                class="text-red-500">
+                <small *ngIf="usuarioForm.get('password')?.hasError('required')">
+                    El password es requerido.
+                </small>
+            </div>
+        </div>
+
+        <div class="flex justify-content-end mt-5">
+            <p-button label="Cancelar" severity="secondary" (click)="closeModal()" class=" mx-2" />
+            <p-button size="small" label="Guardar" icon="pi pi-check" type="submit" severity="success" />
+        </div>
+    </form>
+
+</p-dialog>

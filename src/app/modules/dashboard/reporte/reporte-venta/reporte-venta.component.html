@@ -1,0 +1,69 @@
+<div class="px-4 py-4 mt-2 mb-2 md:px-6 lg:px-4 surface-card shadow-2 border-round ">
+    <ul class="list-none p-0 m-0 flex align-items-center font-medium mb-3">
+        <li>
+            <a class="text-500 no-underline line-height-3 cursor-pointer">Reporte</a>
+        </li>
+        <li class="px-2">
+            <i class="pi pi-angle-right text-500 line-height-3"></i>
+        </li>
+        <li>
+            <span class="text-900 line-height-3">Reporte Ventas</span>
+        </li>
+    </ul>
+    <!-- Título y Botón de Imprimir -->
+    <div class="flex align-items-start flex-column lg:justify-content-between lg:flex-row">
+        <div class="font-medium text-3xl text-900">Reporte General de Ventas</div>
+        <div class="mt-3 lg:mt-0">
+            <button pButton pRipple label="Imprimir" icon="pi pi-print" class="p-button-primary"></button>
+        </div>
+    </div>
+
+    <!-- Tabla de Estadísticas -->
+    <div class="mt-4">
+        <p-table [value]="ventas" responsiveLayout="scroll" class="p-datatable-sm">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th>VENTAS REALIZADAS</th>
+                    <th>TOTAL EN VENTAS</th>
+                    <th>COSTO DE VENTAS</th>
+                    <th>GANANCIAS</th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-venta>
+                <tr>
+                    <td>{{ venta.realizadas }}</td>
+                    <td>{{ venta.total | currency:'USD' }}</td>
+                    <td>{{ venta.costo | currency:'USD' }}</td>
+                    <td>{{ venta.ganancias | currency:'USD' }}</td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
+
+    <!-- Generar Reporte Personalizado -->
+    <div class="mt-4 p-3 border-round surface-card shadow-1">
+        <h3 class="text-900 text-center">Generar Reporte Personalizado</h3>
+        <div class="grid flex justify-content-center mt-4">
+            <div class="col-12 md:col-4 p-4 ">
+                <div class="field">
+                    <label for="fechaInicio" class="text-600 block font-medium">Fecha Inicial</label>
+                    <p-calendar [(ngModel)]="fechaInicio" placeholder="dd/mm/yy" id="fechaInicio" dateFormat="dd/mm/yy"
+                        showIcon></p-calendar>
+                </div>
+            </div>
+            <div class="col-12 md:col-4 p-4 ">
+                <div class="field">
+                    <label for="fechaFin" class="text-600 block font-medium">Fecha Final</label>
+                    <p-calendar [(ngModel)]="fechaFin" placeholder="dd/mm/yy" id="fechaFin" dateFormat="dd/mm/yy"
+                        showIcon />
+                </div>
+            </div>
+        </div>
+        <div class="grid flex justify-content-center mt-5">
+            <div class="col-12 md:col-2 flex align-items-end">
+                <button pButton pRipple (click)="generarReporte()" label="Generar Reporte" icon="pi pi-file-pdf"
+                    class="p-button-danger w-full"></button>
+            </div>
+        </div>
+    </div>
+</div>

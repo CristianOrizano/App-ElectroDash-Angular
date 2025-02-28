@@ -14,9 +14,37 @@
         <div class="font-medium text-3xl text-900">Categorias</div>
 
         <div class="mt-3 lg:mt-0">
-            <button pButton pRipple (click)="openDialog()" label="Add" class="p-button-outlined mr-2"
-                icon="pi pi-user-plus"> </button>
-            <button pButton pRipple label="Export" icon="pi pi-check"></button>
+            <button pButton pRipple [raised]="true" (click)="buscarCategorias()" label="Buscar" icon="pi pi-search"
+                class="p-button p-button-primary  mr-2">
+            </button>
+            <button pButton pRipple [outlined]="true" (click)="openDialog()" label="Agregar"
+                class="p-button-outlined p-button-contrast" icon="pi pi-user-plus">
+            </button>
+        </div>
+    </div>
+
+    <div class="formgrid grid mt-3">
+        <div class="col-12 md:col-12 lg:col-3">
+            <p-floatLabel class="w-full">
+                <input pInputText id="nombre" [(ngModel)]="categoriaFilter.nombre" class="w-full" autocomplete="off" />
+                <label for="nombre">Nombre</label>
+            </p-floatLabel>
+        </div>
+        <div class="col-12 md:col-12 lg:col-3">
+            <p-floatLabel class="w-full">
+                <input pInputText id="descripcion" [(ngModel)]="categoriaFilter.descripcion" class="w-full"
+                    autocomplete="off" />
+                <label for="descripcion">Descripcion</label>
+            </p-floatLabel>
+        </div>
+
+        <div class="col-12 md:col-12 lg:col-3">
+            <p-floatLabel class="w-full">
+                <p-dropdown [options]="estadoOptions" optionLabel="nombre" [(ngModel)]="categoriaFilter.state"
+                    optionValue="valor" placeholder="[Estado]" class="w-full" [showClear]="true" id="estado">
+                </p-dropdown>
+                <label for="estado">Estado</label>
+            </p-floatLabel>
         </div>
     </div>
 </div>

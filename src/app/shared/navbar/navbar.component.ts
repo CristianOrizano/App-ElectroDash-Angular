@@ -6,11 +6,12 @@ import { PrimeModule } from '../prime/prime.module';
 import { AuthService } from '@/modules/auth/infraestructure/auth.service';
 import { LoginResponse } from '@/modules/auth/domain/auth.interface';
 import { OverlayPanel } from 'primeng/overlaypanel';
+
+import { urlproducto, urlusuario } from '@/core/constantes/constantes';
 import {
+  NotificacionProductoService,
   NotificacionResponse,
-  NotificacionService,
-} from '@/core/services/notificacion.service';
-import { urlproducto } from '@/core/constantes/constantes';
+} from '@/core/services/notificacion.producto.service';
 
 @Component({
   selector: 'app-navbar',
@@ -22,7 +23,7 @@ import { urlproducto } from '@/core/constantes/constantes';
 export class NavbarComponent implements OnInit {
   private authService = inject(AuthService);
   private router = inject(Router);
-  private notificacionService = inject(NotificacionService);
+  private notificacionService = inject(NotificacionProductoService);
 
   auth!: LoginResponse | null;
   urlProducto: string = urlproducto;
@@ -32,6 +33,7 @@ export class NavbarComponent implements OnInit {
   @ViewChild('overlayPanel') overlayPanel!: OverlayPanel;
   hayNotificacion: boolean = false;
   notificaciones: NotificacionResponse[] = [];
+  urlUsuario: string = urlusuario;
 
   closeCallback(e: any): void {
     this.sidebarRef.close(e);
@@ -44,11 +46,9 @@ export class NavbarComponent implements OnInit {
 
   ngOnInit() {
     this.auth = this.authService.getAuthorization();
-    this.cargarNotificaciones();
-  }
 
-  cargarNotificaciones() {
-    this.notificacionService.findAll().subscribe((data) => {
+    this.notificacionService.findAllNotificacion();
+    this.notificacionService.notificaciones$.subscribe((data) => {
       this.notificaciones = data;
     });
   }

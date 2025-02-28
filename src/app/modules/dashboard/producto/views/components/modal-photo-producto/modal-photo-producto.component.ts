@@ -102,7 +102,7 @@ export class ModalPhotoProductoComponent implements OnChanges {
           descuento: response.descuento,
           descripcion: response.descripcion,
           idCategoria: response.categoria.id,
-          marca: response.marca,
+          idMarca: response.marca.id,
           precio: response.precio,
           stock: response.stock,
           nimagen: response.nimagen,
