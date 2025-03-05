@@ -21,7 +21,9 @@ export class AuthComponent implements OnInit {
   private router = inject(Router);
   loading: boolean = false;
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.authService.removeAuthorization();
+  }
 
   loginForm = this.formBuilder.group({
     username: ['', [Validators.required, Validators.email]],

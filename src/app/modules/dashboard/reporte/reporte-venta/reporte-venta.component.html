@@ -20,21 +20,19 @@
 
     <!-- Tabla de Estadísticas -->
     <div class="mt-4">
-        <p-table [value]="ventas" responsiveLayout="scroll" class="p-datatable-sm">
+        <h3 class="text-center">Estadísticas de ventas de hoy ({{ today | date:'dd-MM-yyyy' }})</h3>
+        <p-table [value]="ventas" responsiveLayout="scroll" class="p-datatable-sm"
+            styleClass="p-datatable-striped p-datatable-sm p-datatable-gridlines">
             <ng-template pTemplate="header">
                 <tr>
                     <th>VENTAS REALIZADAS</th>
                     <th>TOTAL EN VENTAS</th>
-                    <th>COSTO DE VENTAS</th>
-                    <th>GANANCIAS</th>
                 </tr>
             </ng-template>
             <ng-template pTemplate="body" let-venta>
                 <tr>
                     <td>{{ venta.realizadas }}</td>
                     <td>{{ venta.total | currency:'USD' }}</td>
-                    <td>{{ venta.costo | currency:'USD' }}</td>
-                    <td>{{ venta.ganancias | currency:'USD' }}</td>
                 </tr>
             </ng-template>
         </p-table>

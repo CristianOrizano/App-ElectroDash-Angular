@@ -2,15 +2,7 @@ import { ProductoResponse } from '@/modules/dashboard/producto/domain/producto.i
 import { ProductoService } from '@/modules/dashboard/producto/infraestructure/producto.service';
 import { PrimeModule } from '@/shared/prime/prime.module';
 import { Component, inject } from '@angular/core';
-import { AutoCompleteCompleteEvent } from 'primeng/autocomplete';
-import {
-  BehaviorSubject,
-  debounceTime,
-  map,
-  Observable,
-  Subject,
-  switchMap,
-} from 'rxjs';
+import { BehaviorSubject, debounceTime, Subject } from 'rxjs';
 import { VentaService } from '../../infraestructure/venta.service';
 import {
   CarritoSave,
@@ -20,18 +12,16 @@ import {
 import { urlproducto } from '@/core/constantes/constantes';
 import { AuthService } from '@/modules/auth/infraestructure/auth.service';
 import { LoginResponse } from '@/modules/auth/domain/auth.interface';
-import {
-  ClienteRequest,
-  ClienteResponse,
-} from '@/modules/dashboard/cliente/domain/cliente.interface';
+import { ClienteResponse } from '@/modules/dashboard/cliente/domain/cliente.interface';
 import { ClienteService } from '@/modules/dashboard/cliente/infraestructure/cliente.service';
 import { NotificationService } from '@/core/services/notification-service';
 import { NotificacionProductoService } from '@/core/services/notificacion.producto.service';
+import { NgxSpinnerModule, NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-registrar-venta',
   standalone: true,
-  imports: [PrimeModule],
+  imports: [PrimeModule, NgxSpinnerModule],
   templateUrl: './registrar-venta.component.html',
   styleUrl: './registrar-venta.component.css',
 })
@@ -42,6 +32,7 @@ export class RegistrarVentaComponent {
   private clienteService = inject(ClienteService);
   private notification = inject(NotificationService);
   private notificacionService = inject(NotificacionProductoService);
+  private spinner = inject(NgxSpinnerService);
 
   tipoVenta: string = 'Credito';
   products!: any[];
@@ -226,18 +217,25 @@ export class RegistrarVentaComponent {
       total: this.total,
       detalles: detalles,
     };
-
-    this.carritoService.generarBoleta(boleta).subscribe({
-      next: () => {
-        this.notification.showSuccess('Correcto', `Éxito al guardar`);
-        //  Actualizar notificaciones
-        this.notificacionService.findAllNotificacion();
-        this.cancelarCompra();
-      },
-      error: (error) => {
-        console.error('Error al generar boleta:', error);
-      },
-    });
+    // Mostrar spinner antes de la espera
+    this.spinner.show();
+    setTimeout(() => {
+      this.carritoService.generarBoleta(boleta).subscribe({
+        next: () => {
+          this.notification.showSuccess('Correcto', `Éxito al guardar`);
+          //  Actualizar notificaciones
+          this.notificacionService.findAllNotificacion();
+          this.cancelarCompra();
+        },
+        error: (error) => {
+          console.error('Error al generar boleta:', error);
+        },
+        complete: () => {
+          this.spinner.hide(); // Ocultar spinner
+        },
+      });
+      this.spinner.hide();
+    }, 2000);
   }
 
   cancelarCompra() {

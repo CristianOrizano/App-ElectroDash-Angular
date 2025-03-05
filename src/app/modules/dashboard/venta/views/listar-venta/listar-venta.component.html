@@ -14,31 +14,40 @@
         <div class="font-medium text-3xl text-900">Ventas</div>
         <div class="mt-3 lg:mt-0">
 
-            <button pButton pRipple label="Export" icon="pi pi-check"></button>
+            <button pButton pRipple [raised]="true" (click)="buscarVenta()" label="Buscar" icon="pi pi-search"
+                class="p-button p-button-primary  mr-2">
+            </button>
         </div>
     </div>
+
     <div class="grid mt-2">
         <div class="col-12 md:col-6 lg:col-3">
             <p-floatLabel class="w-full">
-                <input pInputText id="username" class="w-full" />
-                <label for="username">Username</label>
+                <p-calendar id="fechaInicio" class="w-full" [(ngModel)]="fechaInicio" dateFormat="yy-mm-dd"
+                    [showClear]="true"></p-calendar>
+                <label for="fechaInicio">Fecha Inicio</label>
             </p-floatLabel>
         </div>
+
         <div class="col-12 md:col-6 lg:col-3">
             <p-floatLabel class="w-full">
-                <input pInputText id="nombre" class="w-full" />
-                <label for="nombre">Nombre</label>
+                <p-calendar id="fechaFin" class="w-full" [(ngModel)]="fechaFin" [showClear]="true"
+                    dateFormat="yy-mm-dd"></p-calendar>
+                <label for="fechaFin">Fecha Fin</label>
             </p-floatLabel>
         </div>
+
         <div class="col-12 md:col-6 lg:col-3">
             <p-floatLabel class="w-full">
-                <input pInputText id="nombre" class="w-full" />
-                <label for="nombre">Nombre</label>
+                <p-dropdown class="w-full" [(ngModel)]="boletaFilter.tipoVenta" [options]="tiposVenta"
+                    optionValue="valor" optionLabel="nombre" placeholder="Seleccione Tipo Venta" [showClear]="true"
+                    id="estado">
+                </p-dropdown>
+
+                <label for="tipoVenta">Tipo de Venta</label>
             </p-floatLabel>
         </div>
     </div>
-
-
 </div>
 
 <div class="surface-card shadow-2 border-round p-2">
@@ -92,8 +101,8 @@
                     <p-button icon="pi pi-eye" (onClick)="showDialog(boleta.id)" [raised]="true" [rounded]="true"
                         class="mr-2" pTooltip="Ver Detalle" tooltipPosition="top" />
 
-                    <p-button icon="pi pi-file-pdf" (onClick)="generarReporteVenta()" [raised]="true" severity="danger"
-                        [rounded]="true" pTooltip="Generar Reporte" tooltipPosition="top" />
+                    <p-button icon="pi pi-file-pdf" (onClick)="reporteReady(boleta.id)" [raised]="true"
+                        severity="danger" [rounded]="true" pTooltip="Generar Reporte" tooltipPosition="top" />
                 </td>
             </tr>
         </ng-template>
@@ -165,7 +174,8 @@
                             width="50" height="42" (error)="onImageError($event)" class="shadow-4" />
                     </td>
                     <td>{{ detallebol.producto.descripcion }}</td>
-                    <td>{{ detallebol.producto.precio | currency: 'PEN':'symbol':'1.2-2':'es-PE' }}</td>
+                    <td> {{ detallebol.producto.precio | precioDescuento:detallebol.producto.descuento | currency:'PEN'
+                        }}</td>
 
                     <td>{{ detallebol.cantidad }}</td>
                     <td>

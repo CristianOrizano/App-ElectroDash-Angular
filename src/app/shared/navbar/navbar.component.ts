@@ -34,6 +34,7 @@ export class NavbarComponent implements OnInit {
   hayNotificacion: boolean = false;
   notificaciones: NotificacionResponse[] = [];
   urlUsuario: string = urlusuario;
+  isUser: boolean = false;
 
   closeCallback(e: any): void {
     this.sidebarRef.close(e);
@@ -46,6 +47,13 @@ export class NavbarComponent implements OnInit {
 
   ngOnInit() {
     this.auth = this.authService.getAuthorization();
+
+    if (this.auth && this.auth.usuario.roles) {
+      const roles = this.auth.usuario.roles.map((role) => role.nombre);
+
+      // Verifica si el usuario tiene solo el rol "User" y no "Admin"
+      this.isUser = roles.includes('User') && !roles.includes('Admin');
+    }
 
     this.notificacionService.findAllNotificacion();
     this.notificacionService.notificaciones$.subscribe((data) => {

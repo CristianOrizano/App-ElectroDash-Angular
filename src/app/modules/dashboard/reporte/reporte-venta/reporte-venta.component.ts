@@ -1,7 +1,6 @@
 import { PrimeModule } from '@/shared/prime/prime.module';
 import { Component, inject } from '@angular/core';
 import { PrimeNGConfig } from 'primeng/api';
-import { LocaleSettings } from 'primeng/calendar';
 import { VentaService } from '../../venta/infraestructure/venta.service';
 import {
   BoletaFilterFechas,
@@ -21,9 +20,10 @@ import { NotificationService } from '@/core/services/notification-service';
 export class ReporteVentaComponent {
   private ventasService = inject(VentaService);
   private notification = inject(NotificationService);
-  ventas = [{ realizadas: 3, total: 101.5, costo: 30.0, ganancias: 71.5 }];
   fechaInicio: Date | null = null;
   fechaFin: Date | null = null;
+  ventas: { realizadas: number; total: number }[] = [];
+  today: Date = new Date();
 
   constructor(private primeNGConfig: PrimeNGConfig) {}
   ngOnInit() {
@@ -71,6 +71,17 @@ export class ReporteVentaComponent {
       today: 'Hoy',
       clear: 'Limpiar',
       dateFormat: 'dd/mm/yy',
+    });
+
+    this.ventasService.findAllFilter().subscribe({
+      next: (response) => {
+        console.log('Entro bine<<<<');
+        this.ventas = [response];
+        console.log('DA&A', this.ventas);
+      },
+      error: (err) => {
+        console.error('Error al guardar:', err);
+      },
     });
   }
 

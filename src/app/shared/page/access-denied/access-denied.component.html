@@ -1,0 +1,14 @@
+<div class="flex align-items-center justify-content-center h-screen surface-ground">
+    <div class="text-center">
+        <div class="w-10rem md:w-20rem h-10rem md:h-20rem mx-auto bg-contain bg-no-repeat bg-center"
+            style="background-image: url('unauthorized-page.png');">
+        </div>
+        <h1 class="text-600 text-4xl md:text-6xl font-bold mb-3 mt-0">Acceso Denegado</h1>
+        <p class="text-600 text-lg md:text-xl mb-4">
+            No tienes permisos para acceder a esta página.
+            Si crees que esto es un error, contacta con el administrador.
+        </p>
+        <p-button label="Volver al inicio" icon="pi pi-home" [link]="true" routerLink="/login"
+            class="p-button-lg"></p-button>
+    </div>
+</div>

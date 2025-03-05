@@ -1,15 +1,15 @@
 import { inject, Injectable } from '@angular/core';
 import {
   BoletaFilterFechas,
+  BoletaFilterRequest,
   BoletaResponse,
   CarritoSave,
   DetalleBoletaResponse,
   VentaRequest,
 } from '../domain/venta.interface';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, map, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { PaginatedRequest } from '@/shared/page/page.request';
+import { HttpClient } from '@angular/common/http';
 import { PaginatedResponse } from '@/shared/page/page.response';
 import { stringify } from 'qs';
 
@@ -34,6 +34,29 @@ export class VentaService {
     return this.http.get<BoletaResponse[]>(`${this.baseUrl}/api/boleta`);
   }
 
+  findAllFilter(): Observable<{ realizadas: number; total: number }> {
+    return this.http.get<BoletaResponse[]>(`${this.baseUrl}/api/boleta`).pipe(
+      map((ventas) => {
+        const hoy = new Date().toISOString().split('T')[0]; // Fecha actual en YYYY-MM-DD
+
+        const ventasHoy = ventas.filter((venta) => {
+          const fechaVenta = new Date(venta.fechaEmision)
+            .toISOString()
+            .split('T')[0];
+          return fechaVenta === hoy;
+        });
+
+        const totalVentas = ventasHoy.length;
+        const totalIngresos = ventasHoy.reduce(
+          (sum, venta) => sum + venta.total,
+          0
+        );
+
+        return { realizadas: totalVentas, total: totalIngresos };
+      })
+    );
+  }
+
   findByFilterDates(
     filterFechas: BoletaFilterFechas
   ): Observable<BoletaResponse[]> {
@@ -51,17 +74,12 @@ export class VentaService {
   }
 
   findAllPaginated(
-    filter: PaginatedRequest
+    filter: BoletaFilterRequest
   ): Observable<PaginatedResponse<BoletaResponse>> {
-    const params = new HttpParams()
-      .set('page', filter.page.toString())
-      .set('size', filter.size.toString())
-      .set('sortBy', filter.sortBy)
-      .set('sortDir', filter.sortDir);
+    const params = stringify(filter, { skipNulls: true });
 
     return this.http.get<PaginatedResponse<BoletaResponse>>(
-      `${this.baseUrl}/api/boleta/paginated`,
-      { params }
+      `${this.baseUrl}/api/boleta/paginated?${params}`
     );
   }
 

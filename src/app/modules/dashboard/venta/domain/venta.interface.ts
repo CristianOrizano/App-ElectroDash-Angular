@@ -1,6 +1,7 @@
 import { UsuarioResponse } from '@/modules/auth/domain/auth.interface';
 import { ClienteResponse } from '../../cliente/domain/cliente.interface';
 import { ProductoResponse } from '../../producto/domain/producto.interface';
+import { PaginatedRequest } from '@/shared/page/page.request';
 
 export interface CarritoSave {
   id: number;
@@ -31,6 +32,13 @@ export interface BoletaResponse {
   usuario: UsuarioResponse;
   tipoVenta: string;
   total: number;
+}
+
+export interface BoletaFilterRequest extends PaginatedRequest {
+  fechaInicio?: string | null;
+  fechaFin?: string | null;
+  tipoVenta?: string | null;
+  idUsuario?: number | null;
 }
 
 export interface DetalleBoletaResponse {

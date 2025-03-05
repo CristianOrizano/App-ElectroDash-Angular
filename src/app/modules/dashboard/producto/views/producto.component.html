@@ -24,7 +24,7 @@
     </div>
 
     <div class="formgrid grid mt-3">
-        <div class="col-12 md:col-12 lg:col-2">
+        <div class="col-12 md:col-12 lg:col-3">
             <p-floatLabel class="w-full">
                 <input pInputText id="descripcion" [(ngModel)]="productoFilter.descripcion" class="w-full" />
                 <label for="descripcion">Descripcion</label>
@@ -130,8 +130,7 @@
                 </td>
                 <td>{{ producto.categoria.nombre}}</td>
                 <td>
-                    {{ (producto.precio - (producto.precio * (producto.descuento / 100))) | currency:
-                    'PEN':'symbol':'1.2-2':'es-PE' }}
+                    {{ producto.precio | precioDescuento:producto.descuento | currency:'PEN' }}
                 </td>
                 <td>{{ producto.stock}}</td>
                 <td>

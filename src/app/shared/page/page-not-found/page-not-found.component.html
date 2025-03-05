@@ -1,0 +1,14 @@
+<div class="flex align-items-center justify-content-center h-screen surface-ground">
+    <div class="text-center">
+        <div class="w-10rem md:w-20rem h-10rem md:h-20rem mx-auto bg-contain bg-no-repeat bg-center"
+            style="background-image: url('page-not-found.png');">
+        </div>
+        <h1 class="text-600 text-4xl md:text-6xl font-bold mb-3">Oops... Página no encontrada</h1>
+        <p class="text-600 text-lg md:text-xl mb-4">
+            La página que buscas no existe o ha sido movida.
+            Si crees que esto es un error, por favor contacta con el administrador.
+        </p>
+        <p-button label="Volver al inicio" icon="pi pi-home" [link]="true" routerLink="/login"
+            class="p-button-lg"></p-button>
+    </div>
+</div>

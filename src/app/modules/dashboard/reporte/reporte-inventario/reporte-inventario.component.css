@@ -1,0 +1,7 @@
+.selected {
+  background-color: #d4d6d9; /* Azul */
+  color: white;
+  font-weight: bold;
+  border-radius: 5px;
+  cursor: pointer;
+}

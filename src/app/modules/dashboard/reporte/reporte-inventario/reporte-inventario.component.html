@@ -13,15 +13,12 @@
     <!-- Título y Botón de Imprimir -->
     <div class="flex align-items-start flex-column lg:justify-content-between lg:flex-row">
         <div class="font-medium text-3xl text-900">Reporte General de Inventario</div>
-        <div class="mt-3 lg:mt-0">
-            <button pButton pRipple label="Imprimir" icon="pi pi-print" class="p-button-primary"></button>
-        </div>
+
     </div>
 
-    <div class="mt-4 p-3 border-round surface-card shadow-1">
+    <div class="mt-4 p-3 border-round surface-50 shadow-1">
         <h3 class="text-900 text-center">Generar Reporte Personalizado</h3>
-        <div class="grid flex justify-content-center bg-primary mt-4">
-
+        <div class="grid flex justify-content-center mt-4">
             <div class="card">
                 <p-tabView styleClass="tabview-custom" [style]="{ width: '50rem' }">
                     <p-tabPanel>
@@ -32,20 +29,16 @@
                                 </span>
                             </div>
                         </ng-template>
-
                         <div class="card">
-                            <p-carousel [value]="dataCategoria" [numVisible]="4" [numScroll]="3" [circular]="false"
+                            <p-carousel [value]="listCategoria" [numVisible]="4" [numScroll]="3" [circular]="true"
                                 [responsiveOptions]="responsiveOptions">
                                 <ng-template let-categoria pTemplate="item">
-                                    <div class="border-1 surface-border border-round m-2 p-3 flex flex-column align-items-center text-center"
-                                        style=" height: 220px;">
-                                        <!-- Contenedor de la imagen con tamaño fijo -->
-                                        <div style="width: 120px; height: 120px; display: flex; align-items: center; justify-content: center;"
-                                            class="bg-primary">
-                                            <img [src]="categoria.nimagen ? urlCategoria + categoria.nimagen : 'not-found.png'"
-                                                style="width: 100%; height: 100%; object-fit: contain;" />
-                                        </div>
-                                        <!-- Nombre de la categoría alineado debajo -->
+                                    <div class="cursor-pointer border-1 surface-border border-round m-2 p-3  text-center selected"
+                                        [ngClass]="{'selected': selectedCategoria?.id === categoria.id}"
+                                        style=" height: 200px;" (click)="selectCategoria(categoria)">
+                                        <img [src]="categoria.nimagen ? urlCategoria + categoria.nimagen : 'not-found.png'"
+                                            style="width: 100%;height: 100px; object-fit: contain;" />
+
                                         <div class="mt-3 font-medium" style="width: 100%;">
                                             {{ categoria.nombre }}
                                         </div>
@@ -53,10 +46,6 @@
                                 </ng-template>
                             </p-carousel>
                         </div>
-
-
-
-
                     </p-tabPanel>
                     <p-tabPanel header="Header II">
                         <ng-template pTemplate="header">
@@ -66,73 +55,49 @@
                                 </span>
                             </div>
                         </ng-template>
-                        <p>
-                            Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium...
-                        </p>
+                        <div class="card">
+                            <p-carousel [value]="listMarca" [circular]="true" [numVisible]="4" [numScroll]="3"
+                                [responsiveOptions]="responsiveOptions">
+                                <ng-template let-marca pTemplate="item">
+                                    <div class="cursor-pointer border-1 surface-border border-round m-2 p-3  text-center"
+                                        [ngClass]="{'selected': selectedMarca?.id === marca.id}"
+                                        (click)="selectMarca(marca)">
+                                        <img [src]="marca.nimagen ? urlMarca + marca.nimagen : 'not-found.png'"
+                                            style="width: 100%;height: 100px; object-fit: contain;" />
+                                    </div>
+                                </ng-template>
+                            </p-carousel>
+                        </div>
                     </p-tabPanel>
-                    <p-tabPanel header="Header III">
+                    <p-tabPanel header="Todos">
                         <ng-template pTemplate="header">
                             <div class="flex align-items-center gap-2">
                                 <span class="font-bold white-space-nowrap m-0">
-                                    Precio
+                                    Todos los productos
                                 </span>
-
                             </div>
                         </ng-template>
-                        <p>
-                            At vero eos et accusamus et iusto odio dignissimos...
-                        </p>
+                        <div class="card text-center  flex justify-content-center p-3">
+                            <div class="cursor-pointer border-2 surface-border border-round p-2 w-3"
+                                [ngClass]="{'selected': seleccionTodos}" (click)="selectTodos()">
+                                <img src="todosproductos.png" alt="Todos los productos"
+                                    style="width: 160px;height: 150px; object-fit: contain;" />
+                                <div class="mt-3 font-medium" style="width: 100%;">
+                                    Todos
+                                </div>
+                            </div>
+                        </div>
+
                     </p-tabPanel>
+
                 </p-tabView>
             </div>
-
         </div>
         <div class="grid flex justify-content-center mt-5">
             <div class="col-12 md:col-2 flex align-items-end">
-                <button pButton pRipple label="Generar Reporte" icon="pi pi-file-pdf"
-                    class="p-button-danger w-full"></button>
+                <button pButton pRipple label="Generar Reporte" severity="danger" icon="pi pi-file-pdf" class=" w-full"
+                    (click)="generarReporte()"></button>
             </div>
         </div>
     </div>
-</div>
-
-
-<div class="flex flex-wrap gap-3 justify-content-center">
-    <p-card header="Producto 1" subheader="Descripción corta" [style]="{ width: '300px', height: '100%' }"
-        class="h-full flex flex-col">
-        <ng-template pTemplate="header">
-            <div class="w-full h-48 flex justify-center items-center bg-gray-200">
-                <img alt="Card" src="https://primefaces.org/cdn/primeng/images/card-ng.jpg"
-                    class="h-full object-cover" />
-            </div>
-        </ng-template>
-        <p class="flex-grow">
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Inventore sed consequuntur error repudiandae
-        </p>
-        <ng-template pTemplate="footer">
-            <div class="flex gap-2 mt-1">
-                <p-button label="Detalles" severity="info" class="w-full" />
-                <p-button label="Comprar" severity="success" class="w-full" />
-            </div>
-        </ng-template>
-    </p-card>
-
-    <p-card header="Producto 2" subheader="Descripción corta" [style]="{ width: '300px', height: '100%' }"
-        class="h-full flex flex-col">
-        <ng-template pTemplate="header">
-            <div class="w-full h-48 flex justify-center items-center bg-gray-200">
-                <img alt="Producto 2" src="10009.PNG" class="h-full object-cover" />
-            </div>
-        </ng-template>
-        <p class="flex-grow">
-            Breve descripción del producto 2. Puede tener más o menos contenido, pero la tarjeta mantendrá la misma
-            altura.
-        </p>
-        <ng-template pTemplate="footer">
-            <div class="flex gap-2 mt-1">
-                <p-button label="Detalles" severity="info" class="w-full" />
-                <p-button label="Comprar" severity="success" class="w-full" />
-            </div>
-        </ng-template>
-    </p-card>
 </div>

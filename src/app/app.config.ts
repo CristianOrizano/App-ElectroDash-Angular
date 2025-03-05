@@ -12,12 +12,13 @@ import { LOCALE_ID } from '@angular/core';
 registerLocaleData(localeEsPe, 'es-PE');
 
 export const appConfig: ApplicationConfig = {
-  providers: [provideZoneChangeDetection({ eventCoalescing: true }),
-     provideRouter(routes),
-   
-     provideHttpClient(withInterceptors([authInterceptor])), // Agregar provideHttpClient con interceptores
-     MessageService, // Agregar MessageService aquí
-     ConfirmationService,
-     { provide: LOCALE_ID, useValue: 'es-PE' }, // Configura la localización regiona
-    ]
+  providers: [
+    provideZoneChangeDetection({ eventCoalescing: true }),
+    provideRouter(routes),
+
+    provideHttpClient(withInterceptors([authInterceptor])), // Agregar provideHttpClient con interceptores
+    MessageService, // Agregar MessageService aquí
+    ConfirmationService,
+    { provide: LOCALE_ID, useValue: 'es-PE' }, // Configura la localización regiona
+  ],
 };

@@ -16,6 +16,7 @@ import { CategoriaResponse } from '../../categoria/domain/categoria.interface';
 import { MarcaResponse } from '../../marca/domain/marca.interface';
 import { CategoriaService } from '../../categoria/infraestructure/categoria.service';
 import { MarcaService } from '../../marca/infraestructure/marca.service';
+import { PrecioDescuentoPipe } from '@/core/pipes/precio-descuento.pipe';
 
 @Component({
   selector: 'app-producto',
@@ -25,6 +26,7 @@ import { MarcaService } from '../../marca/infraestructure/marca.service';
     SkeletonComponent,
     ModalSaveComponent,
     ModalPhotoProductoComponent,
+    PrecioDescuentoPipe,
   ],
   templateUrl: './producto.component.html',
   styleUrl: './producto.component.css',

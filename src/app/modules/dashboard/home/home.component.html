@@ -15,8 +15,12 @@
                 </div>
                 <!-- Footer con "Ver Detalles" -->
                 <div class="border-top-1 surface-border pt-1 text-center">
-                    <p-button label="Ver Detalles" [text]="true" [plain]="true" icon="pi pi-angle-right"
-                        class=" w-full font-bold" size="small" [style]="{ color: '#5d6d7e' }"></p-button>
+                    <a [routerLink]="isUser ? null : '/dashboard/producto'"
+                        (click)="isUser ? $event.preventDefault() : null" [class.disabled]="isUser"
+                        class="w-full font-bold flex align-items-center justify-content-center text-sm border-round p-2"
+                        style="color: #5d6d7e; text-decoration: none;">
+                        Ver Detalles <i class="pi pi-angle-right ml-2"></i>
+                    </a>
                 </div>
             </div>
         </div>
@@ -35,31 +39,39 @@
                     </div>
                 </div>
                 <div class="border-top-1 surface-border pt-1 text-center">
-                    <p-button label="Ver Detalles" [text]="true" [plain]="true" icon="pi pi-angle-right"
-                        class="font-bold w-full" size="small" [style]="{ color: '#5d6d7e' }"></p-button>
+                    <a [routerLink]="isUser ? null : '/dashboard/categoria'"
+                        (click)="isUser ? $event.preventDefault() : null" [class.disabled]="isUser"
+                        class="w-full font-bold flex align-items-center justify-content-center text-sm border-round p-2"
+                        style="color: #5d6d7e; text-decoration: none;">
+                        Ver Detalles <i class="pi pi-angle-right ml-2"></i>
+                    </a>
                 </div>
             </div>
         </div>
-
-        <!-- Usuarios -->
+        <!-- Marcas -->
         <div class="col-12 md:col-6 lg:col-3">
             <div class="surface-card shadow-2 p-3 border-round">
                 <div class="flex justify-content-between mb-2">
                     <div>
-                        <span class="block text-500 font-bold mb-3">Usuarios</span>
-                        <div class="text-900 font-semibold text-xl">{{ 13 }}</div>
+                        <span class="block text-500 font-bold mb-3">Marcas</span>
+                        <div class="text-900 font-semibold text-xl">{{ totalMarcas }}</div>
                     </div>
-                    <div class="flex align-items-center justify-content-center bg-green-100 border-round"
+                    <div class="flex align-items-center justify-content-center bg-purple-100 border-round"
                         style="width:3rem;height:3rem">
-                        <i class="pi pi-user text-green-500 text-4xl"></i>
+                        <i class="pi pi-briefcase text-purple-500 text-4xl"></i>
                     </div>
                 </div>
                 <div class="border-top-1 surface-border pt-1 text-center">
-                    <p-button label="Ver Detalles" [text]="true" [plain]="true" icon="pi pi-angle-right"
-                        class="font-bold w-full" size="small" [style]="{ color: '#5d6d7e' }"></p-button>
+                    <a [routerLink]="isUser ? null : '/dashboard/marca'"
+                        (click)="isUser ? $event.preventDefault() : null"
+                        class="w-full font-bold flex align-items-center justify-content-center text-sm border-round p-2"
+                        [class.disabled]="isUser" style="color: #5d6d7e; text-decoration: none;">
+                        Ver Detalles <i class="pi pi-angle-right ml-2"></i>
+                    </a>
                 </div>
             </div>
         </div>
+
 
         <!-- Clientes -->
         <div class="col-12 md:col-6 lg:col-3">
@@ -75,77 +87,88 @@
                     </div>
                 </div>
                 <div class="border-top-1 surface-border pt-1 text-center">
-                    <p-button label="Ver Detalles" [text]="true" [plain]="true" icon="pi pi-angle-right"
-                        class="font-bold w-full" size="small" [style]="{ color: '#5d6d7e' }"></p-button>
+                    <a [routerLink]="isUser ? null : '/dashboard/cliente'"
+                        (click)="isUser ? $event.preventDefault() : null"
+                        class="w-full font-bold flex align-items-center justify-content-center text-sm border-round p-2"
+                        [class.disabled]="isUser" style="color: #5d6d7e; text-decoration: none;">
+                        Ver Detalles <i class="pi pi-angle-right ml-2"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Usuarios -->
+        <div class="col-12 md:col-6 lg:col-3" *ngIf="!isUser">
+            <div class="surface-card shadow-2 p-3 border-round">
+                <div class="flex justify-content-between mb-2">
+                    <div>
+                        <span class="block text-500 font-bold mb-3">Usuarios</span>
+                        <div class="text-900 font-semibold text-xl">{{ totalUsuarios }}</div>
+                    </div>
+                    <div class="flex align-items-center justify-content-center bg-green-100 border-round"
+                        style="width:3rem;height:3rem">
+                        <i class="pi pi-user text-green-500 text-4xl"></i>
+                    </div>
+                </div>
+                <div class="border-top-1 surface-border pt-1 text-center">
+                    <a routerLink="/dashboard/usuario"
+                        class="w-full font-bold flex align-items-center justify-content-center text-sm border-round p-2"
+                        style="color: #5d6d7e; text-decoration: none;">
+                        Ver Detalles <i class="pi pi-angle-right ml-2"></i>
+                    </a>
                 </div>
             </div>
         </div>
 
         <!-- Ventas del Día -->
-        <div class="col-12 md:col-6 lg:col-3">
+        <div class="col-12 md:col-6 lg:col-3" *ngIf="!isUser">
             <div class="surface-card shadow-2 p-3 border-round">
                 <div class="flex justify-content-between mb-2">
                     <div>
                         <span class="block text-500 font-bold mb-3">Ventas del Día</span>
-                        <div class="text-900 font-semibold text-xl">{{ 15 }}</div>
+                        <div class="text-900 font-semibold text-xl">{{ ventasRealizadas }}</div>
                     </div>
                     <div class="flex align-items-center justify-content-center bg-orange-100 border-round"
                         style="width:3rem;height:3rem">
-                        <i class="pi pi-dollar text-orange-500 text-4xl"></i>
+                        <i class="pi pi-shopping-cart text-orange-500 text-4xl"></i>
                     </div>
                 </div>
                 <div class="border-top-1 surface-border pt-1 text-center">
-                    <p-button label="Ver Detalles" [text]="true" [plain]="true" icon="pi pi-angle-right"
-                        class="font-bold w-full" size="small" [style]="{ color: '#5d6d7e' }"></p-button>
+                    <a routerLink="/dashboard/listar-venta"
+                        class="w-full font-bold flex align-items-center justify-content-center text-sm border-round p-2"
+                        style="color: #5d6d7e; text-decoration: none;">
+                        Ver Detalles <i class="pi pi-angle-right ml-2"></i>
+                    </a>
                 </div>
             </div>
         </div>
 
-        <!-- Marcas -->
-        <div class="col-12 md:col-6 lg:col-3">
+        <div class="col-12 md:col-6 lg:col-3" *ngIf="!isUser">
             <div class="surface-card shadow-2 p-3 border-round">
                 <div class="flex justify-content-between mb-2">
                     <div>
-                        <span class="block text-500 font-bold mb-3">Marcas</span>
-                        <div class="text-900 font-semibold text-xl">{{ 10 }}</div>
+                        <span class="block text-500 font-bold mb-3">Total Ventas del dia</span>
+                        <div class="text-900 font-semibold text-xl">{{ totalVentas | currency:
+                            'PEN':'symbol':'1.2-2':'es-PE' }}</div>
                     </div>
-                    <div class="flex align-items-center justify-content-center bg-purple-100 border-round"
+                    <div class="flex align-items-center justify-content-center surface-200 border-round"
                         style="width:3rem;height:3rem">
-                        <i class="pi pi-briefcase text-purple-500 text-4xl"></i>
+                        <i class="pi pi-dollar text-bluegray-600 text-4xl"></i>
                     </div>
                 </div>
                 <div class="border-top-1 surface-border pt-1 text-center">
-                    <p-button label="Ver Detalles" [text]="true" [plain]="true" icon="pi pi-angle-right"
-                        class="font-bold w-full" size="small" [style]="{ color: '#5d6d7e' }"></p-button>
+                    <a routerLink="/dashboard/listar-venta"
+                        class="w-full font-bold flex align-items-center justify-content-center text-sm border-round p-2"
+                        style="color: #5d6d7e; text-decoration: none;">
+                        Ver Detalles <i class="pi pi-angle-right ml-2"></i>
+                    </a>
                 </div>
             </div>
         </div>
-
-        <!-- Marcas -->
-        <div class="col-12 md:col-6 lg:col-3">
-            <div class="surface-card shadow-2 p-3 border-round">
-                <div class="flex justify-content-between mb-2">
-                    <div>
-                        <span class="block text-500 font-bold mb-3">Marcas</span>
-                        <div class="text-900 font-semibold text-xl">{{ 10 }}</div>
-                    </div>
-                    <div class="flex align-items-center justify-content-center bg-purple-100 border-round"
-                        style="width:3rem;height:3rem">
-                        <i class="pi pi-briefcase text-purple-500 text-4xl"></i>
-                    </div>
-                </div>
-                <div class="border-top-1 surface-border pt-1 text-center">
-                    <p-button label="Ver Detalles" [text]="true" [plain]="true" icon="pi pi-angle-right"
-                        class="font-bold w-full" size="small" [style]="{ color: '#5d6d7e' }"></p-button>
-                </div>
-            </div>
-        </div>
-
-
     </div>
 </div>
 
-<div class="grid mt-2 h-30rem">
+<div class="grid mt-2" *ngIf="!isUser">
     <div class="col-12 md:col-6 lg:col-8">
         <div class="surface-card shadow-2 border-round  mt-3 p-2">
             <p-chart type="bar" [data]="basicData" [options]="basicOptions" />
@@ -154,6 +177,36 @@
     <div class="col-12 md:col-6 lg:col-4">
         <div class="surface-card shadow-2 border-round mt-3 p-2 ">
             <p-chart type="pie" [data]="pieData"></p-chart>
+        </div>
+    </div>
+</div>
+
+<!--#############-->
+<div class="card shadow-2 py-4 px-5 mt-5" *ngIf="isUser">
+    <div class="flex justify-content-end mx-4 mb-4">
+        <p-button label="Descargar" [raised]="true" (click)="generarPDF()" />
+    </div>
+    <div class="grid justify-content-center">
+        <div *ngFor="let producto of productosConDescuento" class="col-12 sm:col-6 md:col-3 lg:col-3 ">
+            <p-card [style]="{  height: '420px' }" class="relative">
+                <ng-template pTemplate="header">
+                    <div class="discount-badge">-{{ producto.descuento }}%</div>
+                    <img alt="Card" style="height: 200px; object-fit: contain;"
+                        [src]="producto.nimagen?urlProducto + producto.nimagen : 'not-found.png'"
+                        (error)="onImageError($event)" />
+                </ng-template>
+                <ng-template pTemplate="content">
+                    <h2 class="text-lg font-medium">{{ producto.marca.nombre }}</h2>
+                    <p class="text-sm text-gray-500">{{ producto.descripcion }}</p>
+                    <p class="price-container">
+                        <span class="original-price">S/ {{ (producto.precio / (1 - producto.descuento / 100)) |
+                            number:'1.2-2'
+                            }}</span>
+                        <span class="discounted-price">S/ {{ producto.precio }}</span>
+                    </p>
+                </ng-template>
+
+            </p-card>
         </div>
     </div>
 </div>

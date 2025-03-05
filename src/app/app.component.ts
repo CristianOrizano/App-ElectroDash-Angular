@@ -3,15 +3,12 @@ import { RouterOutlet } from '@angular/router';
 
 import { PrimeModule } from './shared/prime/prime.module';
 
-
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [ RouterOutlet,PrimeModule],
+  imports: [RouterOutlet, PrimeModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
-
-  
 })
 export class AppComponent {
   title = 'app-demo';
