@@ -8,7 +8,7 @@ export interface LoginRequest {
 export interface LoginResponse {
   tipoDeToken: string;
   tokenDeAcceso: string;
-  expireOn: string;
+  expiresOn: string;
   usuario: UsuarioResponse;
 }
 export interface UsuarioResponse {

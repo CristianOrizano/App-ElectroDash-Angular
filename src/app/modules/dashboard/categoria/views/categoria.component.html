@@ -26,13 +26,14 @@
     <div class="formgrid grid mt-3">
         <div class="col-12 md:col-12 lg:col-3">
             <p-floatLabel class="w-full">
-                <input pInputText id="nombre" [(ngModel)]="categoriaFilter.nombre" class="w-full" autocomplete="off" />
+                <input pInputText id="nombre" [(ngModel)]="categoriaFilter.nombre" class="w-full mb-2 md:mb-0"
+                    autocomplete="off" />
                 <label for="nombre">Nombre</label>
             </p-floatLabel>
         </div>
         <div class="col-12 md:col-12 lg:col-3">
             <p-floatLabel class="w-full">
-                <input pInputText id="descripcion" [(ngModel)]="categoriaFilter.descripcion" class="w-full"
+                <input pInputText id="descripcion" [(ngModel)]="categoriaFilter.descripcion" class="w-full mb-2 md:mb-0"
                     autocomplete="off" />
                 <label for="descripcion">Descripcion</label>
             </p-floatLabel>
@@ -41,7 +42,8 @@
         <div class="col-12 md:col-12 lg:col-3">
             <p-floatLabel class="w-full">
                 <p-dropdown [options]="estadoOptions" optionLabel="nombre" [(ngModel)]="categoriaFilter.state"
-                    optionValue="valor" placeholder="[Estado]" class="w-full" [showClear]="true" id="estado">
+                    optionValue="valor" placeholder="[Estado]" class="w-full mb-2 md:mb-0" [showClear]="true"
+                    id="estado">
                 </p-dropdown>
                 <label for="estado">Estado</label>
             </p-floatLabel>
@@ -58,10 +60,9 @@
         currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} registros"
         [rowsPerPageOptions]="[10, 25, 50]" [totalRecords]="totalElements" [rowHover]="true"
         (onLazyLoad)="onLazyLoad($event)" [scrollable]="true" scrollHeight="650px">
-
         <ng-template pTemplate="header">
             <tr>
-                <th pSortableColumn="id" style="min-width:7rem">
+                <th pSortableColumn="id" style="min-width:5rem">
                     <p-sortIcon field="id" /> Id
                 </th>
                 <th pSortableColumn="nombre" style="min-width:10rem">
@@ -73,8 +74,8 @@
                 <th style="min-width:6rem">
                     Imagen
                 </th>
-                <th style="min-width:7rem">State</th>
-                <th style="min-width:10rem"></th>
+                <th style="min-width:5rem">State</th>
+                <th style="min-width:11rem"></th>
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-categoria>

@@ -25,7 +25,8 @@
     <div class="formgrid grid mt-3">
         <div class="col-12 md:col-12 lg:col-3">
             <p-floatLabel class="w-full">
-                <input pInputText id="descripcion" [(ngModel)]="marcaFilter.nombre" class="w-full" autocomplete="off" />
+                <input pInputText id="descripcion" [(ngModel)]="marcaFilter.nombre" class="w-full mb-2 md:mb-0"
+                    autocomplete="off" />
                 <label for="descripcion">Descripcion</label>
             </p-floatLabel>
         </div>
@@ -33,7 +34,8 @@
         <div class="col-12 md:col-12 lg:col-3">
             <p-floatLabel class="w-full">
                 <p-dropdown [options]="estadoOptions" optionLabel="nombre" [(ngModel)]="marcaFilter.state"
-                    optionValue="valor" placeholder="[Estado]" class="w-full" [showClear]="true" id="estado">
+                    optionValue="valor" placeholder="[Estado]" class="w-full mb-2 md:mb-0" [showClear]="true"
+                    id="estado">
                 </p-dropdown>
                 <label for="estado">Estado</label>
             </p-floatLabel>
